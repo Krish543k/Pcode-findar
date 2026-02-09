@@ -449,6 +449,15 @@ body.dark-mode .filter-row select {
     margin-top: 10px;
 }
 
+.highlight-match {
+    background-color: #90EE90 !important;
+    color: #000 !important;
+    font-weight: bold !important;
+    padding: 2px 4px !important;
+    border-radius: 3px !important;
+    display: inline-block !important;
+}
+
 @keyframes slideIn {
     from {
         opacity: 0;
@@ -1411,7 +1420,7 @@ body.dark-mode .zoom-display span {
                 <span>🔑 Change Password</span>
             </div>
             <div class="menu-item" onclick="exportData()">
-                <span>  Export Data</span>
+                <span>� Export Data</span>
             </div>
         </div>
     </div>
@@ -1881,7 +1890,7 @@ function createProductCard(item, isCompact = false, searchTerm = '') {
     const highlight = (text) => {
         if (!searchTerm || !text) return text;
         const regex = new RegExp(`(${searchTerm})`, 'gi');
-        return String(text).replace(regex, '<span style="background-color: #90EE90; color: #000; font-weight: bold; padding: 2px 4px; border-radius: 3px;">$1</span>');
+        return String(text).replace(regex, '<span class="highlight-match">$1</span>');
     };
     
     return `
