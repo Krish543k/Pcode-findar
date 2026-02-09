@@ -1814,20 +1814,38 @@ function searchData() {
     const filtered = {};
     Object.keys(stored).forEach(key => {
         const item = stored[key];
-        if (item.pcode.toLowerCase().includes(searchTerm) || 
-            item.sku.toLowerCase().includes(searchTerm)) {
+        // Search in all fields
+        const searchableText = [
+            item.pcode,
+            item.sku,
+            item.bulkGCase,
+            item.mrpOld,
+            item.mrpNew,
+            item.perUnitMrp,
+            item.pouchGCase,
+            item.caseGCase,
+            item.zPartition,
+            item.casePouch,
+            item.palletShipper,
+            item.lsl,
+            item.target,
+            item.usl,
+            item.tera
+        ].join(' ').toLowerCase();
+        
+        if (searchableText.includes(searchTerm)) {
             filtered[key] = item;
         }
     });
-    displayResults(filtered);
+    displayResults(filtered, searchTerm);
 }
 
 function displayAllData() {
     const stored = JSON.parse(localStorage.getItem("mc_data_v1") || "{}");
-    displayResults(stored);
+    displayResults(stored, '');
 }
 
-function displayResults(data) {
+function displayResults(data, searchTerm = '') {
     const container = document.getElementById('resultsContainer');
     const keys = Object.keys(data);
     if (keys.length === 0) {
@@ -1841,7 +1859,7 @@ function displayResults(data) {
     let html = '';
     keys.forEach(key => {
         const item = data[key];
-        html += createProductCard(item, isMultiple);
+        html += createProductCard(item, isMultiple, searchTerm);
     });
     container.innerHTML = html;
 
@@ -1855,9 +1873,17 @@ function displayResults(data) {
     });
 }
 
-function createProductCard(item, isCompact = false) {
+function createProductCard(item, isCompact = false, searchTerm = '') {
     const cardId = 'card_' + item.pcode;
     const compactClass = isCompact ? ' compact' : '';
+    
+    // Helper function to highlight matching text
+    const highlight = (text) => {
+        if (!searchTerm || !text) return text;
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        return String(text).replace(regex, '<span style="background-color: #90EE90; color: #000; font-weight: bold; padding: 2px 4px; border-radius: 3px;">$1</span>');
+    };
+    
     return `
         <div class="product-card${compactClass}" id="${cardId}">
             <div class="section-toggle">
@@ -1872,68 +1898,68 @@ function createProductCard(item, isCompact = false) {
                 <span class="primary-label">PRIMARY</span>
                 <div class="data-row">
                     <span class="data-label">P Code:</span>
-                    <span class="data-value pcode-highlight">${item.pcode}</span>
+                    <span class="data-value pcode-highlight">${highlight(item.pcode)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Bulk G/Case:</span>
-                    <span class="data-value">${item.bulkGCase}</span>
+                    <span class="data-value">${highlight(item.bulkGCase)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Description / SKU:</span>
-                    <span class="data-value">${item.sku}</span>
+                    <span class="data-value">${highlight(item.sku)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">MRP:</span>
                     <span class="data-value">
-                        <span class="price-old">Rs. ${item.mrpOld}</span> 
-                        <span class="price-new">Rs. ${item.mrpNew}</span>
+                        <span class="price-old">Rs. ${highlight(item.mrpOld)}</span> 
+                        <span class="price-new">Rs. ${highlight(item.mrpNew)}</span>
                     </span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Per Unit MRP:</span>
-                    <span class="data-value">Rs. ${item.perUnitMrp}</span>
+                    <span class="data-value">Rs. ${highlight(item.perUnitMrp)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Pouch G/Case:</span>
-                    <span class="data-value">${item.pouchGCase}</span>
+                    <span class="data-value">${highlight(item.pouchGCase)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Case G/Case:</span>
-                    <span class="data-value">${item.caseGCase}</span>
+                    <span class="data-value">${highlight(item.caseGCase)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Z Partition:</span>
-                    <span class="data-value">${item.zPartition}</span>
+                    <span class="data-value">${highlight(item.zPartition)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Case / Pouch:</span>
-                    <span class="data-value">${item.casePouch}</span>
+                    <span class="data-value">${highlight(item.casePouch)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Pallet / Shipper:</span>
-                    <span class="data-value">${item.palletShipper}</span>
+                    <span class="data-value">${highlight(item.palletShipper)}</span>
                 </div>
                 <div style="margin-top: 20px;">
                     <h4 style="color: #667eea; margin-bottom: 10px;">Primary Weight</h4>
                     <div class="data-row">
                         <span class="data-label">Description / Variant / SKU:</span>
-                        <span class="data-value">${item.sku}</span>
+                        <span class="data-value">${highlight(item.sku)}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">LSL:</span>
-                        <span class="data-value">${item.lsl}</span>
+                        <span class="data-value">${highlight(item.lsl)}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">Target:</span>
-                        <span class="data-value">${item.target}</span>
+                        <span class="data-value">${highlight(item.target)}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">USL:</span>
-                        <span class="data-value">${item.usl}</span>
+                        <span class="data-value">${highlight(item.usl)}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">Tera:</span>
-                        <span class="data-value">${item.tera}</span>
+                        <span class="data-value">${highlight(item.tera)}</span>
                     </div>
                 </div>
                 <button class="edit-card-btn" onclick="editRecord('${item.pcode}')">✏️ Edit</button>
@@ -1944,49 +1970,49 @@ function createProductCard(item, isCompact = false) {
                 <span class="secondary-label">SECONDARY</span>
                 <div class="data-row">
                     <span class="data-label">P Code:</span>
-                    <span class="data-value pcode-highlight">${item.pcode}</span>
+                    <span class="data-value pcode-highlight">${highlight(item.pcode)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Description / SKU:</span>
-                    <span class="data-value">${item.sku}</span>
+                    <span class="data-value">${highlight(item.sku)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Pouch G/Case:</span>
-                    <span class="data-value">${item.secPouchGCase || item.pouchGCase}</span>
+                    <span class="data-value">${highlight(item.secPouchGCase || item.pouchGCase)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Case G/Case:</span>
-                    <span class="data-value">${item.secCaseGCase || item.caseGCase}</span>
+                    <span class="data-value">${highlight(item.secCaseGCase || item.caseGCase)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Z Partition:</span>
-                    <span class="data-value">${item.secZPartition || item.zPartition}</span>
+                    <span class="data-value">${highlight(item.secZPartition || item.zPartition)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Case / Pouch:</span>
-                    <span class="data-value">${item.secCasePouch || item.casePouch}</span>
+                    <span class="data-value">${highlight(item.secCasePouch || item.casePouch)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Pallet / Shipper:</span>
-                    <span class="data-value">${item.secPalletShipper || item.palletShipper}</span>
+                    <span class="data-value">${highlight(item.secPalletShipper || item.palletShipper)}</span>
                 </div>
                 <div style="margin-top: 20px;">
                     <h4 style="color: #764ba2; margin-bottom: 10px;">Secondary Weight</h4>
                     <div class="data-row">
                         <span class="data-label">LSL:</span>
-                        <span class="data-value">${item.secLsl || item.lsl || '-'}</span>
+                        <span class="data-value">${highlight(item.secLsl || item.lsl || '-')}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">Target:</span>
-                        <span class="data-value">${item.secTarget || item.target || '-'}</span>
+                        <span class="data-value">${highlight(item.secTarget || item.target || '-')}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">USL:</span>
-                        <span class="data-value">${item.secUsl || item.usl || '-'}</span>
+                        <span class="data-value">${highlight(item.secUsl || item.usl || '-')}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">Tera:</span>
-                        <span class="data-value">${item.secTera || item.tera || '-'}</span>
+                        <span class="data-value">${highlight(item.secTera || item.tera || '-')}</span>
                     </div>
                 </div>
                 <button class="edit-card-btn" onclick="editRecord('${item.pcode}')">✏️ Edit</button>
@@ -2915,4 +2941,3 @@ function closeScanner() {
     </script>
 </body>
 </html>
-
