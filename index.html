@@ -2006,22 +2006,22 @@ function createProductCard(item, isCompact = false, searchTerm = '') {
                     <span class="data-value">${highlight(item.secPalletShipper || item.palletShipper)}</span>
                 </div>
                 <div style="margin-top: 20px;">
-                    <h4 style="color: #764ba2; margin-bottom: 10px;">Secondary Weight</h4>
+                    <h4 style="color: #764ba2; margin-bottom: 10px;"><strong>Secondary Weight</strong></h4>
                     <div class="data-row">
-                        <span class="data-label">LSL:</span>
-                        <span class="data-value">${highlight(item.secLsl || item.lsl || '-')}</span>
+                        <span class="data-label"><strong>LSL:</strong></span>
+                        <span class="data-value"><strong>${highlight(item.secLsl || item.lsl || '-')}</strong></span>
                     </div>
                     <div class="data-row">
-                        <span class="data-label">Target:</span>
-                        <span class="data-value">${highlight(item.secTarget || item.target || '-')}</span>
+                        <span class="data-label"><strong>Target:</strong></span>
+                        <span class="data-value"><strong>${highlight(item.secTarget || item.target || '-')}</strong></span>
                     </div>
                     <div class="data-row">
-                        <span class="data-label">USL:</span>
-                        <span class="data-value">${highlight(item.secUsl || item.usl || '-')}</span>
+                        <span class="data-label"><strong>USL:</strong></span>
+                        <span class="data-value"><strong>${highlight(item.secUsl || item.usl || '-')}</strong></span>
                     </div>
                     <div class="data-row">
-                        <span class="data-label">Tera:</span>
-                        <span class="data-value">${highlight(item.secTera || item.tera || '-')}</span>
+                        <span class="data-label"><strong>Tera:</strong></span>
+                        <span class="data-value"><strong>${highlight(item.secTera || item.tera || '-')}</strong></span>
                     </div>
                 </div>
                 <button class="edit-card-btn" onclick="editRecord('${item.pcode}')">✏️ Edit</button>
@@ -2223,13 +2223,13 @@ function exportData() {
 
 // Download CSV Template
 function downloadTemplate() {
-    // Create template with headers and sample data
-    let csv = "PCode,SKU,BulkGCase,MRPOld,MRPNew,PerUnitMRP,PouchGCase,CaseGCase,ZPartition,CasePouch,PalletShipper,LSL,Target,USL,Tera,SecPouchGCase,SecCaseGCase,SecZPartition,SecCasePouch,SecPalletShipper,SecLsl,SecTarget,SecUsl,SecTera\n";
+    // Create template with headers and sample data (removed Secondary Data fields as they copy from Primary)
+    let csv = "PCode,SKU,BulkGCase,MRPOld,MRPNew,PerUnitMRP,PouchGCase,CaseGCase,ZPartition,CasePouch,PalletShipper,LSL,Target,USL,Tera,SecLsl,SecTarget,SecUsl,SecTera\n";
     
     // Add sample rows
-    csv += "123456,MAGGI 1KG MASALA,2500,199,167,10.3,1200,1300,500,12,24,1829,1945,2062,21.23-25.29-27.21,1250,1350,520,14,26,1850,1970,2090,22.00-26.00-28.00\n";
-    csv += "789012,NOODLES 500G PACK,1800,99,85,8.5,900,950,400,10,20,1500,1600,1700,18.50-22.00-24.00,920,970,420,12,22,1520,1620,1720,19.00-23.00-25.00\n";
-    csv += ",,,,,,,,,,,,,,,,,,,,,,,,\n"; // Empty row for user to fill
+    csv += "123456,MAGGI 1KG MASALA,2500,199,167,10.3,1200,1300,500,12,24,1829,1945,2062,21.23-25.29-27.21,1850,1970,2090,22.00-26.00-28.00\n";
+    csv += "789012,NOODLES 500G PACK,1800,99,85,8.5,900,950,400,10,20,1500,1600,1700,18.50-22.00-24.00,1520,1620,1720,19.00-23.00-25.00\n";
+    csv += ",,,,,,,,,,,,,,,,,,\n"; // Empty row for user to fill
     
     const blob = new Blob([csv], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
@@ -2344,6 +2344,33 @@ function changePassword() {
 function vibrateDevice(pattern = [200, 100, 200]) {
     if ('vibrate' in navigator) {
         navigator.vibrate(pattern);
+    }
+}
+
+// Beep Sound Function for Scanner
+function playBeepSound() {
+    try {
+        // Create Web Audio API beep sound
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Beep sound settings
+        oscillator.frequency.value = 1200; // Higher frequency for beep (1200 Hz)
+        oscillator.type = 'square'; // Square wave for classic beep sound
+        
+        // Volume envelope
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+        
+        // Play beep for 150ms
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.15);
+    } catch (e) {
+        console.log('Beep sound not supported:', e);
     }
 }
 
@@ -2852,9 +2879,10 @@ function openScanner() {
         config,
         (decodedText, decodedResult) => {
             // Success callback
-            vibrateDevice([200, 100, 200]);
+            playBeepSound(); // Play beep sound
+            vibrateDevice([200, 100, 200]); // Vibrate phone
             document.getElementById('searchInput').value = decodedText;
-            showSuccessPopup('Code scanned: ' + decodedText);
+            showSuccessPopup('✅ Code scanned successfully!');
             closeScanner();
             searchData();
         },
@@ -2875,6 +2903,8 @@ function openScanner() {
         closeScanner();
         const manualCode = prompt('Camera not available. Please enter code manually:');
         if (manualCode) {
+            playBeepSound(); // Play beep for manual entry too
+            vibrateDevice([100]); // Short vibration
             document.getElementById('searchInput').value = manualCode;
             searchData();
         }
