@@ -2668,10 +2668,27 @@ function openScanner() {
                 applyZoom();
             }
         }, 500);
-    }).catch(err => {
+    ).catch(err => {
         console.error('Scanner error:', err);
         closeScanner();
-        const manualCode = prompt('Camera not available. Please enter code manually:');
+        
+        let errorMsg = 'Camera not available.';
+        
+        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+            errorMsg = '❌ Camera Permission Denied!\n\nPlease:\n1. Allow camera permission\n2. Refresh page\n3. Try again';
+        } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+            errorMsg = '❌ No Camera Found!\n\nPlease check:\n1. Camera is connected\n2. Camera is not used by another app';
+        } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+            errorMsg = '❌ Camera In Use!\n\nCamera is being used by another app.\nClose other apps and try again.';
+        } else if (err.name === 'OverconstrainedError') {
+            errorMsg = '❌ Camera Not Supported!\n\nYour camera doesn\'t support the required settings.';
+        } else if (err.name === 'NotSupportedError') {
+            errorMsg = '❌ HTTPS Required!\n\nCamera needs:\n• HTTPS connection, OR\n• localhost server\n\nSolution: Use start_server.bat';
+        }
+        
+        alert(errorMsg);
+        
+        const manualCode = prompt('Enter code manually:');
         if (manualCode) {
             document.getElementById('searchInput').value = manualCode;
             searchData();
