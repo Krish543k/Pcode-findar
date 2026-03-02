@@ -1509,6 +1509,17 @@ function searchData() {
             filtered[key] = item;
         }
     });
+    
+    // Play sound and vibrate when results found
+    const resultCount = Object.keys(filtered).length;
+    if (resultCount > 0) {
+        playSearchSound();
+        vibrateDevice([100, 50, 100]);
+    } else {
+        playErrorSound();
+        vibrateDevice([200]);
+    }
+    
     displayResults(filtered, searchTerm);
 }
 
@@ -2051,6 +2062,63 @@ function vibrateDevice(pattern = [200, 100, 200]) {
     }
 }
 
+// Sound Functions
+function playSearchSound() {
+    // Success sound - beep beep
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 800; // High pitch
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+    
+    // Second beep
+    setTimeout(() => {
+        const oscillator2 = audioContext.createOscillator();
+        const gainNode2 = audioContext.createGain();
+        
+        oscillator2.connect(gainNode2);
+        gainNode2.connect(audioContext.destination);
+        
+        oscillator2.frequency.value = 1000;
+        oscillator2.type = 'sine';
+        
+        gainNode2.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+        
+        oscillator2.start(audioContext.currentTime);
+        oscillator2.stop(audioContext.currentTime + 0.1);
+    }, 100);
+}
+
+function playErrorSound() {
+    // Error sound - low buzz
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 200; // Low pitch
+    oscillator.type = 'sawtooth';
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3);
+}
+
 // Custom Theme Functions
 function openThemeSelector() {
     document.getElementById('themeModal').classList.add('active');
@@ -2310,6 +2378,7 @@ function openScanner() {
         config,
         (decodedText, decodedResult) => {
             // Success callback
+            playSearchSound();
             vibrateDevice([200, 100, 200]);
             document.getElementById('searchInput').value = decodedText;
             showSuccessPopup('Code scanned: ' + decodedText);
