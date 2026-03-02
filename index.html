@@ -28,7 +28,7 @@ body {
 }
 
 body.dark-mode {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    background: #000000 !important;
 }
 
 body.dark-mode .container,
@@ -36,8 +36,8 @@ body.dark-mode .search-section,
 body.dark-mode .product-card,
 body.dark-mode .modal-content,
 body.dark-mode .side-menu {
-    background: #0f3460;
-    color: #e0e0e0;
+    background: #000000;
+    color: #ffffff;
 }
 
 body.dark-mode .data-label,
@@ -45,31 +45,31 @@ body.dark-mode .data-value,
 body.dark-mode h2,
 body.dark-mode h3,
 body.dark-mode h4 {
-    color: #e0e0e0;
+    color: #ffffff;
 }
 
 body.dark-mode .data-row {
-    border-bottom-color: #1a1a2e;
+    border-bottom-color: #000000;
 }
 
 body.dark-mode #searchInput,
 body.dark-mode .modal-content input {
-    background: #1a1a2e;
-    color: #e0e0e0;
+    background: #000000;
+    color: #ffffff;
     border-color: #667eea;
 }
 
 body.dark-mode .toggle-btn:not(.active) {
-    background: #1a1a2e;
+    background: #000000;
     color: #999;
 }
 
 body.dark-mode .menu-item {
-    border-bottom-color: #1a1a2e;
+    border-bottom-color: #000000;
 }
 
 body.dark-mode .menu-item span {
-    color: #e0e0e0;
+    color: #ffffff;
 }
 
 header {
@@ -283,8 +283,8 @@ h1 {
 }
 
 body.dark-mode .filter-panel {
-    background: #0f3460;
-    color: #e0e0e0;
+    background: #000000;
+    color: #ffffff;
 }
 
 .filter-panel h3 {
@@ -293,7 +293,7 @@ body.dark-mode .filter-panel {
 }
 
 body.dark-mode .filter-panel h3 {
-    color: #8b9cff;
+    color: #ffffff;
 }
 
 .filter-row {
@@ -321,8 +321,8 @@ body.dark-mode .filter-panel h3 {
 
 body.dark-mode .filter-row input,
 body.dark-mode .filter-row select {
-    background: #1a1a2e;
-    color: #e0e0e0;
+    background: #000000;
+    color: #ffffff;
     border-color: #667eea;
 }
 
@@ -527,52 +527,39 @@ body.dark-mode .filter-row select {
 .data-label {
     font-weight: 600;
     color: #555;
-    background: transparent !important;
 }
 
 .data-value {
     color: #333;
     font-weight: 500;
-    background: transparent !important;
-}
-
-body.dark-mode .data-label {
-    color: #ffffff !important;
-    background: transparent !important;
-}
-
-body.dark-mode .data-value {
-    color: #ffffff !important;
-    background: transparent !important;
 }
 
 .pcode-highlight {
-    font-size: 20px !important;
-    color: #333 !important;
-    font-weight: 700 !important;
-    background: transparent !important;
-    background-color: transparent !important;
+    font-size: 20px;
+    color: #667eea;
+    font-weight: 700;
 }
 
-body.dark-mode .pcode-highlight {
-    font-size: 20px !important;
-    color: #ffffff !important;
-    font-weight: 700 !important;
-    background: transparent !important;
-    background-color: transparent !important;
-}
-
+/* Search Highlight - Green Text */
 .search-highlight {
     color: #00ff00 !important;
     font-weight: 700;
-    background: transparent !important;
-    background-color: transparent !important;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    animation: highlightPulse 1.5s ease-in-out 3;
+}
+
+@keyframes highlightPulse {
+    0%, 100% { 
+        text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    }
+    50% { 
+        text-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+    }
 }
 
 body.dark-mode .search-highlight {
     color: #00ff00 !important;
-    background: transparent !important;
-    background-color: transparent !important;
+    text-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
 }
 
 .delete-card-btn {
@@ -784,7 +771,7 @@ body.dark-mode .delete-card-btn:hover {
 }
 
 body.dark-mode .modal-content h3 {
-    color: #8b9cff;
+    color: #ffffff;
 }
 
 .modal-content input[type="file"],
@@ -832,143 +819,143 @@ body.dark-mode .modal-content h3 {
     animation: popupFade 0.3s ease;
 }
 
-body.dark-mode #zoomLevel {
-    color: #8b9cff;
+@keyframes popupFade {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
 }
 
-/* Scanner Container & Premium Animation */
-.scanner-container {
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-    margin: 20px auto;
+.popup-content {
+    background: white;
+    padding: 40px;
     border-radius: 15px;
-    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    text-align: center;
+    min-width: 300px;
 }
 
-.scanning-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, #00ff00, transparent);
-    box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
-    animation: scanAnimation 2s linear infinite;
-    z-index: 10;
-    pointer-events: none;
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: #4CAF50;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    margin: 0 auto 20px;
+    animation: successBounce 0.6s ease;
 }
 
-@keyframes scanAnimation {
-    0% {
-        top: 0;
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    90% {
-        opacity: 1;
-    }
-    100% {
-        top: 100%;
-        opacity: 0;
-    }
-}
-
-.scanner-corners {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 10;
-}
-
-.corner {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border: 3px solid #00ff00;
-    box-shadow: 0 0 10px #00ff00;
-    animation: cornerPulse 2s ease-in-out infinite;
-}
-
-.corner.top-left {
-    top: 10px;
-    left: 10px;
-    border-right: none;
-    border-bottom: none;
-    border-radius: 10px 0 0 0;
-}
-
-.corner.top-right {
-    top: 10px;
-    right: 10px;
-    border-left: none;
-    border-bottom: none;
-    border-radius: 0 10px 0 0;
-}
-
-.corner.bottom-left {
-    bottom: 10px;
-    left: 10px;
-    border-right: none;
-    border-top: none;
-    border-radius: 0 0 0 10px;
-}
-
-.corner.bottom-right {
-    bottom: 10px;
-    right: 10px;
-    border-left: none;
-    border-top: none;
-    border-radius: 0 0 10px 0;
-}
-
-@keyframes cornerPulse {
+@keyframes successBounce {
     0%, 100% {
-        opacity: 0.6;
         transform: scale(1);
     }
     50% {
-        opacity: 1;
-        transform: scale(1.1);
+        transform: scale(1.2);
     }
 }
 
-.scanner-modal {
-    max-width: 600px !important;
+.popup-content h3 {
+    color: #4CAF50;
+    margin-bottom: 10px;
 }
 
-.close-scanner-btn {
-    background: linear-gradient(135deg, #f44336 0%, #e91e63 100%) !important;
-    color: white !important;
-    font-weight: 600;
-    padding: 12px 30px;
+.popup-content p {
+    color: #666;
+}
+
+.popup-content p {
+    color: #666;
+}
+
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.theme-option {
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.theme-option:hover {
+    transform: scale(1.05);
+}
+
+.theme-preview {
+    width: 100%;
+    height: 80px;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
-    transition: all 0.3s ease;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
-.close-scanner-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(244, 67, 54, 0.4);
+.theme-option p {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
 }
 
-.close-scanner-btn:active {
-    transform: translateY(0);
+body.dark-mode .theme-option p {
+    color: #ffffff;
 }
 
-body.dark-mode .scanning-line {
-    background: linear-gradient(90deg, transparent, #00ff00, transparent);
-    box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
+.zoom-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 10px;
 }
 
-body.dark-mode .corner {
-    border-color: #00ff00;
-    box-shadow: 0 0 15px #00ff00;
+body.dark-mode .zoom-controls {
+    background: #000000;
+}
+
+.zoom-btn {
+    padding: 10px 20px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s;
+    min-width: 60px;
+}
+
+.zoom-btn:hover {
+    background: #5568d3;
+    transform: scale(1.05);
+}
+
+.zoom-btn:active {
+    transform: scale(0.95);
+}
+
+#zoomLevel {
+    font-size: 18px;
+    font-weight: 600;
+    color: #667eea;
+    min-width: 60px;
+    text-align: center;
+}
+
+body.dark-mode #zoomLevel {
+    color: #ffffff;
 }
 
 @media (max-width: 768px) {
@@ -1041,10 +1028,459 @@ body.dark-mode .corner {
         padding: 8px 12px;
     }
 }
+
+/* Scanner Animation */
+.scanner-container {
+    position: relative;
+}
+
+#reader {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+/* Focus Box */
+#reader::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    height: 280px;
+    border: 4px solid rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 
+        0 0 0 9999px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    z-index: 8;
+}
+
+.scanning-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(0, 255, 0, 0.5) 20%, 
+        #00ff00 50%, 
+        rgba(0, 255, 0, 0.5) 80%, 
+        transparent 100%);
+    box-shadow: 
+        0 0 25px #00ff00, 
+        0 0 50px #00ff00,
+        0 0 75px rgba(0, 255, 0, 0.7),
+        0 3px 15px rgba(0, 255, 0, 0.9);
+    animation: scanAnimation 2.5s linear infinite;
+    z-index: 20;
+    pointer-events: none;
+}
+
+/* Scanning line glow trail */
+.scanning-line::before {
+    content: '';
+    position: absolute;
+    top: -25px;
+    left: 0;
+    width: 100%;
+    height: 25px;
+    background: linear-gradient(to bottom, transparent, rgba(0, 255, 0, 0.4));
+    filter: blur(8px);
+}
+
+.scanning-line::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 100%;
+    height: 25px;
+    background: linear-gradient(to top, transparent, rgba(0, 255, 0, 0.4));
+    filter: blur(8px);
+}
+
+@keyframes scanAnimation {
+    0% {
+        top: 0%;
+        opacity: 0;
+    }
+    5% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+    95% {
+        opacity: 0.8;
+    }
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
+}
+
+.scanner-corners {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 12;
+}
+
+.corner {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border: 5px solid #00ff00;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+}
+
+.corner.top-left {
+    top: 50%;
+    left: 50%;
+    margin-top: -140px;
+    margin-left: -140px;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 15px 0 0 0;
+}
+
+.corner.top-right {
+    top: 50%;
+    right: 50%;
+    margin-top: -140px;
+    margin-right: -140px;
+    border-left: none;
+    border-bottom: none;
+    border-radius: 0 15px 0 0;
+}
+
+.corner.bottom-left {
+    bottom: 50%;
+    left: 50%;
+    margin-bottom: -140px;
+    margin-left: -140px;
+    border-right: none;
+    border-top: none;
+    border-radius: 0 0 0 15px;
+}
+
+.corner.bottom-right {
+    bottom: 50%;
+    right: 50%;
+    margin-bottom: -140px;
+    margin-right: -140px;
+    border-left: none;
+    border-top: none;
+    border-radius: 0 0 15px 0;
+}
+
+/* Scanning Text Indicator */
+.scanning-text {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #00ff00;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    z-index: 20;
+    pointer-events: none;
+    box-shadow: 
+        0 0 20px rgba(0, 255, 0, 0.5),
+        0 4px 15px rgba(0, 0, 0, 0.5);
+    animation: scanningTextPulse 1.5s ease-in-out infinite;
+    letter-spacing: 1px;
+}
+
+@keyframes scanningTextPulse {
+    0%, 100% {
+        opacity: 0.7;
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.05);
+    }
+}
+
+/* Close Scanner Button */
+.close-scanner-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #f44336 0%, #e91e63 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 25;
+    box-shadow: 
+        0 4px 15px rgba(244, 67, 54, 0.4),
+        0 0 20px rgba(244, 67, 54, 0.3);
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.close-scanner-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 
+        0 6px 20px rgba(244, 67, 54, 0.5),
+        0 0 30px rgba(244, 67, 54, 0.4);
+}
+
+.close-scanner-btn:active {
+    transform: scale(0.95);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .close-scanner-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+        top: 8px;
+        right: 8px;
+    }
+    
+    .scanning-text {
+        font-size: 14px;
+        padding: 8px 20px;
+        bottom: 15px;
+    }
+    
+    #reader::after {
+        width: 240px;
+        height: 240px;
+    }
+    
+    .corner {
+        width: 50px;
+        height: 50px;
+        border-width: 4px;
+    }
+    
+    .corner.top-left {
+        margin-top: -120px;
+        margin-left: -120px;
+    }
+    
+    .corner.top-right {
+        margin-top: -120px;
+        margin-right: -120px;
+    }
+    
+    .corner.bottom-left {
+        margin-bottom: -120px;
+        margin-left: -120px;
+    }
+    
+    .corner.bottom-right {
+        margin-bottom: -120px;
+        margin-right: -120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .close-scanner-btn {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+    
+    .scanning-text {
+        font-size: 12px;
+        padding: 6px 16px;
+        bottom: 10px;
+    }
+    
+    #reader::after {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .corner {
+        width: 45px;
+        height: 45px;
+        border-width: 4px;
+    }
+    
+    .corner.top-left {
+        margin-top: -100px;
+        margin-left: -100px;
+    }
+    
+    .corner.top-right {
+        margin-top: -100px;
+        margin-right: -100px;
+    }
+    
+    .corner.bottom-left {
+        margin-bottom: -100px;
+        margin-left: -100px;
+    }
+    
+    .corner.bottom-right {
+        margin-bottom: -100px;
+        margin-right: -100px;
+    }
+}
+
+body.dark-mode .scanning-line {
+    background: linear-gradient(90deg, transparent, #00ff00, transparent);
+    box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
+}
+
+body.dark-mode .corner {
+    border-color: #00ff00;
+    box-shadow: 0 0 15px #00ff00;
+}
+
+body.dark-mode .close-scanner-btn {
+    background: linear-gradient(135deg, #d32f2f 0%, #c2185b 100%);
+    box-shadow: 
+        0 4px 15px rgba(211, 47, 47, 0.5),
+        0 0 20px rgba(211, 47, 47, 0.4);
+}
+
+body.dark-mode .scanning-text {
+    background: rgba(0, 0, 0, 0.9);
+    color: #00ff00;
+    box-shadow: 
+        0 0 25px rgba(0, 255, 0, 0.6),
+        0 4px 15px rgba(0, 0, 0, 0.7);
+}
+
+/* Scan Success Effect */
+.scan-success-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0, 255, 0, 0.3) 0%, transparent 70%);
+    z-index: 9999;
+    pointer-events: none;
+    animation: scanSuccessFlash 0.8s ease-out;
+    display: none;
+}
+
+@keyframes scanSuccessFlash {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    30% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+.scan-success-overlay.active {
+    display: block;
+}
+
+.scan-success-checkmark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 120px;
+    color: #00ff00;
+    text-shadow: 
+        0 0 30px rgba(0, 255, 0, 0.8),
+        0 0 60px rgba(0, 255, 0, 0.5);
+    animation: checkmarkPop 0.6s ease-out;
+}
+
+@keyframes checkmarkPop {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.3);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Results Counter */
+.results-counter {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 25px;
+    margin: 15px 20px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 
+        0 4px 15px rgba(102, 126, 234, 0.3),
+        0 0 30px rgba(102, 126, 234, 0.2);
+    animation: slideInDown 0.4s ease-out;
+    letter-spacing: 0.5px;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.results-counter .count-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: #00ff00;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    margin: 0 5px;
+}
+
+body.dark-mode .results-counter {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 
+        0 4px 20px rgba(102, 126, 234, 0.5),
+        0 0 40px rgba(102, 126, 234, 0.3);
+}
+
+body.dark-mode .results-counter .count-number {
+    color: #00ff00;
+    text-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+}
     </style>
 </head>
 
 <body>
+    <!-- Scan Success Overlay -->
+    <div id="scanSuccessOverlay" class="scan-success-overlay">
+        <div class="scan-success-checkmark">✓</div>
+    </div>
+    
     <!-- Password Screen -->
     <div id="passwordScreen" class="password-screen">
         <div class="password-box">
@@ -1054,8 +1490,7 @@ body.dark-mode .corner {
             <input type="password" id="passwordInput" placeholder="Enter Password" onkeypress="if(event.key==='Enter') checkPassword()">
             <button onclick="checkPassword()">Unlock</button>
             <p class="password-error" id="passwordError"></p>
-            <p style="font-size: 12px; color: #999; margin-top: 20px;">Default:1</p>
-        </div>
+            </div>
     </div>
 
     <header>
@@ -1096,9 +1531,6 @@ body.dark-mode .corner {
             <div class="menu-item" onclick="changePassword()">
                 <span>🔑 Change Password</span>
             </div>
-            <div class="menu-item" onclick="exportData()">
-                <span>� Export Data</span>
-            </div>
             <div class="menu-item" onclick="downloadAPK()"><span>?? Download APK for Android</span></div>
         </div>
     </div>
@@ -1135,6 +1567,8 @@ body.dark-mode .corner {
             </div>
         </div>
 
+        <div id="resultsCounter" class="results-counter" style="display: none;"></div>
+        
         <div id="resultsContainer" class="results-container">
         </div>
     </div>
@@ -1192,11 +1626,10 @@ body.dark-mode .corner {
     </div>
 
     <div id="scannerModal" class="modal">
-        <div class="modal-content scanner-modal">
+        <div class="modal-content scanner-container">
             <span class="close" onclick="closeScanner()">&times;</span>
             <h2>Scan QR/Barcode</h2>
-            <div class="scanner-container">
-                <div id="reader" style="width: 100%; max-width: 500px; margin: 0 auto; position: relative;"></div>
+            <div id="reader" style="width: 100%; max-width: 500px; margin: 0 auto; position: relative;">
                 <div class="scanning-line"></div>
                 <div class="scanner-corners">
                     <div class="corner top-left"></div>
@@ -1204,9 +1637,8 @@ body.dark-mode .corner {
                     <div class="corner bottom-left"></div>
                     <div class="corner bottom-right"></div>
                 </div>
-            </div>
-            <div class="scanner-controls">
-                <button onclick="closeScanner()" class="scanner-btn close-scanner-btn">❌ Close Scanner</button>
+                <div class="scanning-text">🔍 Scanning...</div>
+                <button class="close-scanner-btn" onclick="vibrateDevice([100]); closeScanner();">✕ Close Scanner</button>
             </div>
             <div class="zoom-controls">
                 <button onclick="adjustZoom(-0.5)" class="zoom-btn">🔍−</button>
@@ -1436,11 +1868,17 @@ function searchData() {
     Object.keys(stored).forEach(key => {
         const item = stored[key];
         if (item.pcode.toLowerCase().includes(searchTerm) || 
-            item.sku.toLowerCase().includes(searchTerm)) {
+            item.sku.toLowerCase().includes(searchTerm) ||
+            item.bulkGCase.toLowerCase().includes(searchTerm) ||
+            item.pouchGCase.toLowerCase().includes(searchTerm) ||
+            item.caseGCase.toLowerCase().includes(searchTerm) ||
+            item.palletShipper.toLowerCase().includes(searchTerm) ||
+            item.mrpOld.toLowerCase().includes(searchTerm) ||
+            item.mrpNew.toLowerCase().includes(searchTerm)) {
             filtered[key] = item;
         }
     });
-    displayResults(filtered, searchTerm);
+    displayResults(filtered);
 }
 
 function displayAllData() {
@@ -1448,13 +1886,25 @@ function displayAllData() {
     displayResults(stored);
 }
 
-function displayResults(data, searchTerm = '') {
+function displayResults(data) {
     const container = document.getElementById('resultsContainer');
+    const counter = document.getElementById('resultsCounter');
     const keys = Object.keys(data);
+    
     if (keys.length === 0) {
         container.innerHTML = '<p class="no-data">No data available. Upload CSV or add manual data.</p>';
+        if (counter) counter.style.display = 'none';
         return;
     }
+    
+    const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+    
+    // Update counter
+    if (counter) {
+        counter.innerHTML = `Found <span class="count-number">${keys.length}</span> result${keys.length !== 1 ? 's' : ''}`;
+        counter.style.display = 'block';
+    }
+    
     let html = '';
     keys.forEach(key => {
         const item = data[key];
@@ -1472,17 +1922,15 @@ function displayResults(data, searchTerm = '') {
     });
 }
 
+function highlightSearchTerm(text, searchTerm) {
+    if (!searchTerm || !text) return text;
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    return text.replace(regex, '<span class="search-highlight">$1</span>');
+}
+
 function createProductCard(item, isCompact = false, searchTerm = '') {
     const cardId = 'card_' + item.pcode;
     const compactClass = isCompact ? ' compact' : '';
-    
-    // Helper function to highlight matching text
-    const highlightText = (text, search) => {
-        if (!search || !text) return text;
-        const regex = new RegExp(`(${search})`, 'gi');
-        return text.replace(regex, '<span class="search-highlight">$1</span>');
-    };
-    
     return `
         <div class="product-card${compactClass}" id="${cardId}">
             <div class="section-toggle">
@@ -1497,69 +1945,69 @@ function createProductCard(item, isCompact = false, searchTerm = '') {
                 <span class="primary-label">PRIMARY</span>
                 <div class="data-row">
                     <span class="data-label">P Code:</span>
-                    <span class="data-value pcode-highlight">${highlightText(item.pcode, searchTerm)}</span>
+                    <span class="data-value pcode-highlight">${highlightSearchTerm(item.pcode, searchTerm)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Bulk G/Case:</span>
-                    <span class="data-value">${highlightText(item.bulkGCase, searchTerm)}</span>
+                    <span class="data-value">${highlightSearchTerm(item.bulkGCase, searchTerm)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Description / SKU:</span>
-                    <span class="data-value">${highlightText(item.sku, searchTerm)}</span>
+                    <span class="data-value">${highlightSearchTerm(item.sku, searchTerm)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">MRP:</span>
                     <span class="data-value">
-                        <span class="price-old">Rs. ${highlightText(item.mrpOld, searchTerm)}</span> 
-                        <span class="price-new">Rs. ${highlightText(item.mrpNew, searchTerm)}</span>
+                        <span class="price-old">Rs. ${highlightSearchTerm(item.mrpOld, searchTerm)}</span> 
+                        <span class="price-new">Rs. ${highlightSearchTerm(item.mrpNew, searchTerm)}</span>
                     </span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Per Unit MRP:</span>
-                    <span class="data-value">Rs. ${highlightText(item.perUnitMrp, searchTerm)}</span>
+                    <span class="data-value">Rs. ${highlightSearchTerm(item.perUnitMrp, searchTerm)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Pouch G/Case:</span>
-                    <span class="data-value">${highlightText(item.pouchGCase, searchTerm)}</span>
+                    <span class="data-value">${highlightSearchTerm(item.pouchGCase, searchTerm)}</span>
                 </div>
 
                 <div class="data-row">
                     <span class="data-label">Case G/Case:</span>
-                    <span class="data-value">${highlightText(item.caseGCase, searchTerm)}</span>
+                    <span class="data-value">${highlightSearchTerm(item.caseGCase, searchTerm)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Z Partition:</span>
-                    <span class="data-value">${highlightText(item.zPartition, searchTerm)}</span>
+                    <span class="data-value">${highlightSearchTerm(item.zPartition, searchTerm)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Case / Pouch:</span>
-                    <span class="data-value">${highlightText(item.casePouch, searchTerm)}</span>
+                    <span class="data-value">${highlightSearchTerm(item.casePouch, searchTerm)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Pallet / Shipper:</span>
-                    <span class="data-value">${highlightText(item.palletShipper, searchTerm)}</span>
+                    <span class="data-value">${highlightSearchTerm(item.palletShipper, searchTerm)}</span>
                 </div>
                 <div style="margin-top: 20px;">
                     <h4 style="color: #667eea; margin-bottom: 10px;">Primary Weight</h4>
                     <div class="data-row">
                         <span class="data-label">Description / Variant / SKU:</span>
-                        <span class="data-value">${highlightText(item.sku, searchTerm)}</span>
+                        <span class="data-value">${item.sku}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">LSL:</span>
-                        <span class="data-value">${highlightText(item.lsl, searchTerm)}</span>
+                        <span class="data-value">${item.lsl}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">Target:</span>
-                        <span class="data-value">${highlightText(item.target, searchTerm)}</span>
+                        <span class="data-value">${item.target}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">USL:</span>
-                        <span class="data-value">${highlightText(item.usl, searchTerm)}</span>
+                        <span class="data-value">${item.usl}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">Tera:</span>
-                        <span class="data-value">${highlightText(item.tera, searchTerm)}</span>
+                        <span class="data-value">${item.tera}</span>
                     </div>
                 </div>
                 <button class="edit-card-btn" onclick="editRecord('${item.pcode}')">✏️ Edit</button>
@@ -1570,51 +2018,51 @@ function createProductCard(item, isCompact = false, searchTerm = '') {
                 <span class="secondary-label">SECONDARY</span>
                 <div class="data-row">
                     <span class="data-label">P Code:</span>
-                    <span class="data-value pcode-highlight">${highlightText(item.pcode, searchTerm)}</span>
+                    <span class="data-value pcode-highlight">${item.pcode}</span>
                 </div>
 
                 <div class="data-row">
                     <span class="data-label">Description / SKU:</span>
-                    <span class="data-value">${highlightText(item.sku, searchTerm)}</span>
+                    <span class="data-value">${item.sku}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Pouch G/Case:</span>
-                    <span class="data-value">${highlightText(item.secPouchGCase || item.pouchGCase, searchTerm)}</span>
+                    <span class="data-value">${highlightSearchTerm(item.secPouchGCase || item.pouchGCase, searchTerm)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Case G/Case:</span>
-                    <span class="data-value">${highlightText(item.secCaseGCase || item.caseGCase, searchTerm)}</span>
+                    <span class="data-value">${highlightSearchTerm(item.secCaseGCase || item.caseGCase, searchTerm)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Z Partition:</span>
-                    <span class="data-value">${highlightText(item.secZPartition || item.zPartition, searchTerm)}</span>
+                    <span class="data-value">${highlightSearchTerm(item.secZPartition || item.zPartition, searchTerm)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Case / Pouch:</span>
-                    <span class="data-value">${highlightText(item.secCasePouch || item.casePouch, searchTerm)}</span>
+                    <span class="data-value">${highlightSearchTerm(item.secCasePouch || item.casePouch, searchTerm)}</span>
                 </div>
                 <div class="data-row">
                     <span class="data-label">Pallet / Shipper:</span>
-                    <span class="data-value">${highlightText(item.secPalletShipper || item.palletShipper, searchTerm)}</span>
+                    <span class="data-value">${highlightSearchTerm(item.secPalletShipper || item.palletShipper, searchTerm)}</span>
                 </div>
                 
                 <div style="margin-top: 20px;">
                     <h4 style="color: #764ba2; margin-bottom: 10px;">Secondary Weight</h4>
                     <div class="data-row">
                         <span class="data-label">LSL:</span>
-                        <span class="data-value">${highlightText(item.secLsl || item.lsl || '-', searchTerm)}</span>
+                        <span class="data-value">${item.secLsl || item.lsl || '-'}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">Target:</span>
-                        <span class="data-value">${highlightText(item.secTarget || item.target || '-', searchTerm)}</span>
+                        <span class="data-value">${item.secTarget || item.target || '-'}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">USL:</span>
-                        <span class="data-value">${highlightText(item.secUsl || item.usl || '-', searchTerm)}</span>
+                        <span class="data-value">${item.secUsl || item.usl || '-'}</span>
                     </div>
                     <div class="data-row">
                         <span class="data-label">Tera:</span>
-                        <span class="data-value">${highlightText(item.secTera || item.tera || '-', searchTerm)}</span>
+                        <span class="data-value">${item.secTera || item.tera || '-'}</span>
                     </div>
                 </div>
                 
@@ -1846,19 +2294,25 @@ function showPasswordScreen() {
 }
 
 function checkPassword() {
-    const input = document.getElementById('passwordInput').value;
+    const input = document.getElementById('passwordInput');
     const savedPassword = localStorage.getItem('app_password') || '1234';
     
-    if (input === savedPassword) {
+    if (input.value === savedPassword) {
         document.getElementById('passwordScreen').style.display = 'none';
         vibrateDevice([100]);
         loadDarkMode();
         // Don't display data - show empty state
         showEmptyState();
     } else {
-        document.getElementById('passwordError').textContent = 'Wrong password!';
-        vibrateDevice([50, 50, 50]);
-        document.getElementById('passwordInput').value = '';
+        const passwordBox = document.querySelector('.password-box');
+        const errorMsg = document.getElementById('passwordError');
+        errorMsg.textContent = '? Wrong Password!';
+        vibrateDevice([100, 50, 100, 50, 100]);
+        passwordBox.classList.add('shake');
+        input.classList.add('shake');
+        setTimeout(() => { passwordBox.classList.remove('shake'); input.classList.remove('shake'); }, 500);
+        input.value = '';
+        setTimeout(() => { errorMsg.textContent = ''; }, 3000);
     }
 }
 
@@ -1933,6 +2387,17 @@ function changePassword() {
 function vibrateDevice(pattern = [200, 100, 200]) {
     if ('vibrate' in navigator) {
         navigator.vibrate(pattern);
+    }
+}
+
+// Scan Success Effect
+function showScanSuccessEffect() {
+    const overlay = document.getElementById('scanSuccessOverlay');
+    if (overlay) {
+        overlay.classList.add('active');
+        setTimeout(() => {
+            overlay.classList.remove('active');
+        }, 800);
     }
 }
 
@@ -2174,17 +2639,9 @@ function openScanner() {
     }
     
     const config = {
-        fps: 60,
-        qrbox: { width: 300, height: 300 },
-        aspectRatio: 1.0,
-        disableFlip: false,
-        experimentalFeatures: {
-            useBarCodeDetectorIfSupported: true
-        },
-        rememberLastUsedCamera: true,
-        supportedScanTypes: [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-        ]
+        fps: 30,
+        qrbox: { width: 250, height: 250 },
+        aspectRatio: 1.0
     };
     
     html5QrCode.start(
@@ -2192,17 +2649,17 @@ function openScanner() {
         config,
         (decodedText, decodedResult) => {
             // Success callback
+            showScanSuccessEffect();
             vibrateDevice([200, 100, 200]);
             document.getElementById('searchInput').value = decodedText;
             showSuccessPopup('Code scanned: ' + decodedText);
             closeScanner();
-            searchData();
+            setTimeout(() => searchData(), 300);
         },
         (errorMessage) => {
             // Error callback - ignore, keep scanning
         }
     ).then(() => {
-        isScanning = true;
         // Get video element after scanner starts
         setTimeout(() => {
             const video = document.querySelector('#reader video');
@@ -2214,26 +2671,7 @@ function openScanner() {
     }).catch(err => {
         console.error('Scanner error:', err);
         closeScanner();
-        
-        let errorMsg = 'Camera access denied or not available.\n\n';
-        
-        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-            errorMsg += 'Please allow camera permission in your browser settings and try again.';
-        } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-            errorMsg += 'No camera found on your device.';
-        } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
-            errorMsg += 'Camera is being used by another app. Please close other apps and try again.';
-        } else if (err.name === 'OverconstrainedError') {
-            errorMsg += 'Camera does not support the required settings.';
-        } else if (err.name === 'NotSupportedError') {
-            errorMsg += 'HTTPS is required for camera access. Please use HTTPS or localhost.';
-        } else {
-            errorMsg += 'Error: ' + err.message;
-        }
-        
-        alert(errorMsg + '\n\nYou can manually enter the code below:');
-        
-        const manualCode = prompt('Enter code manually:');
+        const manualCode = prompt('Camera not available. Please enter code manually:');
         if (manualCode) {
             document.getElementById('searchInput').value = manualCode;
             searchData();
@@ -2312,3 +2750,13 @@ function closeScanner() {
 </html>
 
 
+
+
+<script>
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js')
+        .then(() => console.log('PWA Ready'))
+        .catch(err => console.log('PWA Error:', err));
+}
+</script>
