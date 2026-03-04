@@ -888,6 +888,47 @@ body.dark-mode #zoomLevel {
     color: #8b9cff;
 }
 
+/* Theme Selector Styles */
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.theme-option {
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.theme-option:hover {
+    transform: scale(1.05);
+}
+
+.theme-preview {
+    width: 100%;
+    height: 60px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: box-shadow 0.3s;
+}
+
+.theme-option:hover .theme-preview {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.theme-option p {
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+}
+
+body.dark-mode .theme-option p {
+    color: #e0e0e0;
+}
+
 /* Scanner Container & Premium Animation */
 .scanner-container {
     position: relative;
@@ -1105,6 +1146,9 @@ body.dark-mode .corner {
             <p>Enter password to access</p>
             <input type="password" id="passwordInput" placeholder="Enter Password" onkeypress="if(event.key==='Enter') checkPassword()">
             <button onclick="checkPassword()">Unlock</button>
+            <div onclick="useFingerprintAuth()" style="width: 50px; height: 50px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 15px auto 0; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 10px rgba(76, 175, 80, 0.3);" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                <span style="font-size: 28px;">👆</span>
+            </div>
             <p class="password-error" id="passwordError"></p>
         </div>
     </div>
@@ -1147,10 +1191,13 @@ body.dark-mode .corner {
             <div class="menu-item" onclick="changePassword()">
                 <span>🔑 Change Password</span>
             </div>
-            <div class="menu-item" onclick="exportData()">
-                <span>  Export Data</span>
+            <div class="menu-item" onclick="manageFingerprintAuth()">
+                <span>👆 Fingerprint Setup</span>
             </div>
-            <div class="menu-item" onclick="downloadAPK()"><span>?? Download APK for Android</span></div>
+            <div class="menu-item" onclick="downloadUserGuide()">
+                <span>📖 How to Use (Guide)</span>
+            </div>
+            <div class="menu-item" onclick="downloadAPK()"><span>📱 Download APK for Android</span></div>
         </div>
     </div>
 
@@ -1279,23 +1326,67 @@ body.dark-mode .corner {
             <div class="theme-grid">
                 <div class="theme-option" onclick="setTheme('default')">
                     <div class="theme-preview" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-                    <p>Default Purple</p>
+                    <p>✨ Default Purple</p>
                 </div>
                 <div class="theme-option" onclick="setTheme('blue')">
                     <div class="theme-preview" style="background: linear-gradient(135deg, #2196F3 0%, #21CBF3 100%);"></div>
-                    <p>Blue Ocean</p>
+                    <p>🌊 Blue Ocean</p>
                 </div>
                 <div class="theme-option" onclick="setTheme('green')">
                     <div class="theme-preview" style="background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);"></div>
-                    <p>Green Nature</p>
+                    <p>🌿 Green Nature</p>
                 </div>
                 <div class="theme-option" onclick="setTheme('red')">
                     <div class="theme-preview" style="background: linear-gradient(135deg, #f44336 0%, #e91e63 100%);"></div>
-                    <p>Red Fire</p>
+                    <p>🔥 Red Fire</p>
                 </div>
                 <div class="theme-option" onclick="setTheme('orange')">
                     <div class="theme-preview" style="background: linear-gradient(135deg, #FF9800 0%, #FF5722 100%);"></div>
-                    <p>Orange Sunset</p>
+                    <p>🌅 Orange Sunset</p>
+                </div>
+                <div class="theme-option" onclick="setTheme('pink')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #e91e63 0%, #f06292 100%);"></div>
+                    <p>💖 Pink Love</p>
+                </div>
+                <div class="theme-option" onclick="setTheme('teal')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #009688 0%, #00BCD4 100%);"></div>
+                    <p>🌴 Teal Ocean</p>
+                </div>
+                <div class="theme-option" onclick="setTheme('yellow')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #FFC107 0%, #FFEB3B 100%);"></div>
+                    <p>☀️ Yellow Sun</p>
+                </div>
+                <div class="theme-option" onclick="setTheme('indigo')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #3F51B5 0%, #5C6BC0 100%);"></div>
+                    <p>🌌 Indigo Night</p>
+                </div>
+                <div class="theme-option" onclick="setTheme('cyan')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #00BCD4 0%, #80DEEA 100%);"></div>
+                    <p>💎 Cyan Crystal</p>
+                </div>
+                <div class="theme-option" onclick="setTheme('lime')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #CDDC39 0%, #C0CA33 100%);"></div>
+                    <p>🍋 Lime Fresh</p>
+                </div>
+                <div class="theme-option" onclick="setTheme('brown')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #795548 0%, #8D6E63 100%);"></div>
+                    <p>🍫 Brown Coffee</p>
+                </div>
+                <div class="theme-option" onclick="setTheme('deeporange')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #FF5722 0%, #FF7043 100%);"></div>
+                    <p>🔶 Deep Orange</p>
+                </div>
+                <div class="theme-option" onclick="setTheme('deeppurple')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #673AB7 0%, #9575CD 100%);"></div>
+                    <p>🔮 Deep Purple</p>
+                </div>
+                <div class="theme-option" onclick="setTheme('bluegrey')">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #607D8B 0%, #78909C 100%);"></div>
+                    <p>⚙️ Blue Grey</p>
+                </div>
+                <div class="theme-option" onclick="setCustomTheme()">
+                    <div class="theme-preview" style="background: linear-gradient(135deg, #333 0%, #666 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 28px;">🎨</div>
+                    <p>🎨 Custom Color</p>
                 </div>
             </div>
         </div>
@@ -1431,6 +1522,19 @@ function addManualData() {
         return;
     }
     
+    // Check if PCode already exists
+    const stored = JSON.parse(localStorage.getItem("mc_data_v1") || "{}");
+    const submitBtn = document.querySelector('#manualForm button');
+    const isEditMode = submitBtn.getAttribute('data-mode') === 'edit';
+    
+    // If not in edit mode and PCode exists, ask for confirmation
+    if (!isEditMode && stored[pcode]) {
+        const confirm = window.confirm(`PCode "${pcode}" already exists!\n\nDo you want to UPDATE the existing data?\n\nOK = Update existing data\nCancel = Go back and change PCode`);
+        if (!confirm) {
+            return; // User cancelled, don't save
+        }
+    }
+    
     // Ask for password before adding/updating data
     const password = prompt('Enter password to save data:');
     const savedPassword = localStorage.getItem('app_password') || '1234';
@@ -1440,9 +1544,6 @@ function addManualData() {
         vibrateDevice([50, 50, 50]);
         return;
     }
-    
-    const submitBtn = document.querySelector('#manualForm button');
-    const isEditMode = submitBtn.getAttribute('data-mode') === 'edit';
     
     const data = {
         pcode: pcode,
@@ -1466,26 +1567,36 @@ function addManualData() {
         secTera: document.getElementById('secTera').value.trim(),
         status: "OK"
     };
-    let stored = JSON.parse(localStorage.getItem("mc_data_v1") || "{}");
-    stored[pcode] = data;
-    localStorage.setItem("mc_data_v1", JSON.stringify(stored));
-    document.getElementById('manualForm').reset();
-    closeManualEntryModal();
-    vibrateDevice([100]);
     
-    if (isEditMode) {
-        showSuccessPopup('Data updated successfully!');
-        submitBtn.textContent = 'Add Data';
-        submitBtn.removeAttribute('data-mode');
-        document.getElementById('pcode').readOnly = false;
-        // Refresh search results if there's a search term
-        const searchTerm = document.getElementById('searchInput').value.trim();
-        if (searchTerm) {
-            searchData();
+    try {
+        const wasExisting = stored[pcode] ? true : false;
+        stored[pcode] = data;
+        localStorage.setItem("mc_data_v1", JSON.stringify(stored));
+        
+        console.log('Data saved successfully:', data);
+        console.log('Total records:', Object.keys(stored).length);
+        
+        document.getElementById('manualForm').reset();
+        closeManualEntryModal();
+        vibrateDevice([100]);
+        
+        if (isEditMode || wasExisting) {
+            showSuccessPopup(`Data UPDATED! PCode: ${pcode}. Search to view.`);
+            submitBtn.textContent = 'Add Data';
+            submitBtn.removeAttribute('data-mode');
+            document.getElementById('pcode').readOnly = false;
+            // Refresh search results if there's a search term
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            if (searchTerm) {
+                searchData();
+            }
+        } else {
+            showSuccessPopup(`Data ADDED! PCode: ${pcode}. Search to view.`);
+            showEmptyState();
         }
-    } else {
-        showSuccessPopup('Data added successfully! Use search to find it.');
-        showEmptyState();
+    } catch (error) {
+        console.error('Error saving data:', error);
+        alert('Error saving data: ' + error.message);
     }
 }
 
@@ -1886,10 +1997,10 @@ function exportData() {
         alert('No data to export');
         return;
     }
-    let csv = "PCode,SKU,BulkGCase,MRPOld,MRPNew,PerUnitMRP,PouchGCase,CaseGCase,ZPartition,CasePouch,PalletShipper,LSL,Target,USL,Tera,SecPouchGCase,SecCaseGCase,SecZPartition,SecCasePouch,SecPalletShipper,SecLsl,SecTarget,SecUsl,SecTera,Status\n";
+    let csv = "PCode,SKU,BulkGCase,MRPOld,MRPNew,PerUnitMRP,PouchGCase,CaseGCase,ZPartition,CasePouch,PalletShipper,LSL,Target,USL,Tera,SecLsl,SecTarget,SecUsl,SecTera,Status\n";
     keys.forEach(key => {
         const item = stored[key];
-        csv += `${item.pcode},${item.sku},${item.bulkGCase},${item.mrpOld},${item.mrpNew},${item.perUnitMrp},${item.pouchGCase},${item.caseGCase},${item.zPartition},${item.casePouch},${item.palletShipper},${item.lsl},${item.target},${item.usl},${item.tera},${item.secPouchGCase || ''},${item.secCaseGCase || ''},${item.secZPartition || ''},${item.secCasePouch || ''},${item.secPalletShipper || ''},${item.secLsl || ''},${item.secTarget || ''},${item.secUsl || ''},${item.secTera || ''},${item.status}\n`;
+        csv += `${item.pcode},${item.sku},${item.bulkGCase},${item.mrpOld},${item.mrpNew},${item.perUnitMrp},${item.pouchGCase},${item.caseGCase},${item.zPartition},${item.casePouch},${item.palletShipper},${item.lsl},${item.target},${item.usl},${item.tera},${item.secLsl || ''},${item.secTarget || ''},${item.secUsl || ''},${item.secTera || ''},${item.status}\n`;
     });
     const blob = new Blob([csv], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
@@ -1906,12 +2017,12 @@ function exportData() {
 // Download CSV Template
 function downloadTemplate() {
     // Create template with headers and sample data
-    let csv = "PCode,SKU,BulkGCase,MRPOld,MRPNew,PerUnitMRP,PouchGCase,CaseGCase,ZPartition,CasePouch,PalletShipper,LSL,Target,USL,Tera,SecPouchGCase,SecCaseGCase,SecZPartition,SecCasePouch,SecPalletShipper,SecLsl,SecTarget,SecUsl,SecTera\n";
+    let csv = "PCode,SKU,BulkGCase,MRPOld,MRPNew,PerUnitMRP,PouchGCase,CaseGCase,ZPartition,CasePouch,PalletShipper,LSL,Target,USL,Tera,SecLsl,SecTarget,SecUsl,SecTera\n";
     
     // Add sample rows
-    csv += "123456,MAGGI 1KG MASALA,2500,199,167,10.3,1200,1300,500,12,24,1829,1945,2062,21.23-25.29-27.21,1250,1350,520,14,26,1850,1970,2090,22.00-26.00-28.00\n";
-    csv += "789012,NOODLES 500G PACK,1800,99,85,8.5,900,950,400,10,20,1500,1600,1700,18.50-22.00-24.00,920,970,420,12,22,1520,1620,1720,19.00-23.00-25.00\n";
-    csv += ",,,,,,,,,,,,,,,,,,,,,,,,\n"; // Empty row for user to fill
+    csv += "123456,MAGGI 1KG MASALA,2500,199,167,10.3,1200,1300,500,12,24,1829,1945,2062,21.23-25.29-27.21,1850,1970,2090,22.00-26.00-28.00\n";
+    csv += "789012,NOODLES 500G PACK,1800,99,85,8.5,900,950,400,10,20,1500,1600,1700,18.50-22.00-24.00,1520,1620,1720,19.00-23.00-25.00\n";
+    csv += ",,,,,,,,,,,,,,,,,,,\n"; // Empty row for user to fill
     
     const blob = new Blob([csv], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
@@ -1952,18 +2063,307 @@ function showPasswordScreen() {
 function checkPassword() {
     const input = document.getElementById('passwordInput').value;
     const savedPassword = localStorage.getItem('app_password') || '1234';
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordBox = document.querySelector('.password-box');
     
     if (input === savedPassword) {
-        document.getElementById('passwordScreen').style.display = 'none';
-        vibrateDevice([100]);
-        loadDarkMode();
-        // Don't display data - show empty state
-        showEmptyState();
+        unlockApp();
     } else {
-        document.getElementById('passwordError').textContent = 'Wrong password!';
-        vibrateDevice([50, 50, 50]);
-        document.getElementById('passwordInput').value = '';
+        // Show error popup at top
+        showErrorPopup('Wrong Password!');
+        
+        // Red highlight entire password box structure
+        passwordBox.style.border = '3px solid #f44336';
+        passwordBox.style.boxShadow = '0 0 30px rgba(244, 67, 54, 0.8)';
+        passwordBox.style.animation = 'shake 0.5s';
+        
+        // Red highlight password input
+        passwordInput.style.borderColor = '#f44336';
+        passwordInput.style.background = '#ffebee';
+        
+        // Vibrate
+        vibrateDevice([50, 50, 50, 50, 50]);
+        
+        // Clear input
+        passwordInput.value = '';
+        
+        // Reset after animation
+        setTimeout(() => {
+            passwordBox.style.border = 'none';
+            passwordBox.style.boxShadow = '0 10px 40px rgba(0,0,0,0.3)';
+            passwordBox.style.animation = '';
+            passwordInput.style.borderColor = '#667eea';
+            passwordInput.style.background = 'white';
+        }, 500);
     }
+}
+
+// Show Error Popup - Simple text at top
+function showErrorPopup(message) {
+    // Create popup if doesn't exist
+    let popup = document.getElementById('errorPopup');
+    if (!popup) {
+        popup = document.createElement('div');
+        popup.id = 'errorPopup';
+        popup.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #f44336;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 10000;
+            display: none;
+            animation: slideDown 0.3s ease;
+            text-align: center;
+        `;
+        document.body.appendChild(popup);
+        
+        // Add animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                0% { transform: translateX(-50%) translateY(-50px); opacity: 0; }
+                100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+                20%, 40%, 60%, 80% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    popup.textContent = message;
+    popup.style.display = 'block';
+    
+    // Hide after 2 seconds
+    setTimeout(() => {
+        popup.style.display = 'none';
+    }, 2000);
+}
+
+// Unlock app function
+function unlockApp() {
+    document.getElementById('passwordScreen').style.display = 'none';
+    vibrateDevice([100]);
+    loadDarkMode();
+    showEmptyState();
+}
+
+// Fingerprint Authentication
+async function useFingerprintAuth() {
+    // Check if WebAuthn is supported
+    if (!window.PublicKeyCredential) {
+        showErrorPopup('❌ Fingerprint Not Supported!');
+        return;
+    }
+    
+    const fingerprintEnabled = localStorage.getItem('fingerprint_enabled');
+    
+    if (!fingerprintEnabled) {
+        // First time setup
+        const setup = confirm('Fingerprint not set up yet!\n\nDo you want to set up fingerprint authentication?\n\nOK = Set up now\nCancel = Use password');
+        if (setup) {
+            await setupFingerprint();
+        }
+        return;
+    }
+    
+    // Authenticate with fingerprint
+    try {
+        document.getElementById('passwordError').textContent = '👆 Place your finger on the sensor...';
+        document.getElementById('passwordError').style.color = '#4CAF50';
+        
+        const credentialId = localStorage.getItem('fingerprint_credential');
+        if (!credentialId) {
+            throw new Error('No fingerprint registered');
+        }
+        
+        // Create authentication challenge
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+        
+        const publicKeyCredentialRequestOptions = {
+            challenge: challenge,
+            allowCredentials: [{
+                id: Uint8Array.from(atob(credentialId), c => c.charCodeAt(0)),
+                type: 'public-key',
+                transports: ['internal']
+            }],
+            timeout: 60000,
+            userVerification: 'required'
+        };
+        
+        const assertion = await navigator.credentials.get({
+            publicKey: publicKeyCredentialRequestOptions
+        });
+        
+        if (assertion) {
+            // Fingerprint verified successfully
+            document.getElementById('passwordError').textContent = '✅ Fingerprint verified!';
+            document.getElementById('passwordError').style.color = '#4CAF50';
+            vibrateDevice([100, 50, 100]);
+            
+            setTimeout(() => {
+                unlockApp();
+            }, 500);
+        }
+    } catch (error) {
+        console.error('Fingerprint auth error:', error);
+        
+        // Show error popup at top
+        showErrorPopup('Wrong Fingerprint!');
+        
+        // Red highlight entire password box structure
+        const passwordBox = document.querySelector('.password-box');
+        passwordBox.style.border = '3px solid #f44336';
+        passwordBox.style.boxShadow = '0 0 30px rgba(244, 67, 54, 0.8)';
+        passwordBox.style.animation = 'shake 0.5s';
+        
+        // Update error message
+        document.getElementById('passwordError').textContent = '❌ Fingerprint not recognized! Try again or use password.';
+        document.getElementById('passwordError').style.color = '#f44336';
+        
+        // Vibrate error pattern
+        vibrateDevice([50, 50, 50, 50, 50]);
+        
+        // Reset after animation
+        setTimeout(() => {
+            passwordBox.style.border = 'none';
+            passwordBox.style.boxShadow = '0 10px 40px rgba(0,0,0,0.3)';
+            passwordBox.style.animation = '';
+        }, 500);
+    }
+}
+
+// Setup Fingerprint
+async function setupFingerprint() {
+    try {
+        // Check if WebAuthn is supported
+        if (!window.PublicKeyCredential) {
+            alert('❌ Fingerprint Not Supported!\n\nYour browser/device does not support fingerprint authentication.\n\nRequirements:\n- HTTPS website (not HTTP)\n- Modern browser (Chrome, Edge, Safari)\n- Device with fingerprint sensor');
+            return;
+        }
+        
+        // Ask for password first
+        const password = prompt('Enter your current password to set up fingerprint:');
+        const savedPassword = localStorage.getItem('app_password') || '1234';
+        
+        if (password !== savedPassword) {
+            alert('Wrong password! Cannot set up fingerprint.');
+            return;
+        }
+        
+        alert('✅ Password verified!\n\n👆 Now place your finger on the sensor to register your fingerprint.\n\nNote: You may need to scan your finger multiple times.');
+        
+        // Create registration challenge
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+        
+        const userId = new Uint8Array(16);
+        window.crypto.getRandomValues(userId);
+        
+        const publicKeyCredentialCreationOptions = {
+            challenge: challenge,
+            rp: {
+                name: "P Code Verify",
+                id: window.location.hostname || "localhost"
+            },
+            user: {
+                id: userId,
+                name: "user@pcodeverify.app",
+                displayName: "P Code User"
+            },
+            pubKeyCredParams: [
+                {alg: -7, type: "public-key"},  // ES256
+                {alg: -257, type: "public-key"} // RS256
+            ],
+            authenticatorSelection: {
+                authenticatorAttachment: "platform",
+                requireResidentKey: false,
+                userVerification: "required"
+            },
+            timeout: 60000,
+            attestation: "none"
+        };
+        
+        console.log('Starting fingerprint registration...');
+        
+        const credential = await navigator.credentials.create({
+            publicKey: publicKeyCredentialCreationOptions
+        });
+        
+        if (credential) {
+            // Save credential ID
+            const credentialId = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
+            localStorage.setItem('fingerprint_credential', credentialId);
+            localStorage.setItem('fingerprint_enabled', 'true');
+            
+            console.log('Fingerprint registered successfully!');
+            vibrateDevice([100, 50, 100, 50, 100]);
+            showSuccessPopup('✅ Fingerprint registered successfully! 👆');
+        }
+    } catch (error) {
+        console.error('Fingerprint setup error:', error);
+        
+        let errorMessage = 'Fingerprint setup failed!\n\n';
+        
+        if (error.name === 'NotAllowedError') {
+            errorMessage += 'Reason: Setup cancelled or permission denied.\n\nPlease try again and allow fingerprint access.';
+        } else if (error.name === 'NotSupportedError') {
+            errorMessage += 'Reason: Your device does not support fingerprint authentication.\n\nRequirements:\n- Device with fingerprint sensor\n- HTTPS connection (not HTTP)\n- Modern browser';
+        } else if (error.name === 'SecurityError') {
+            errorMessage += 'Reason: Security error.\n\nThis page must be served over HTTPS (not HTTP) for fingerprint to work.\n\nTry:\n- Upload to GitHub Pages (HTTPS)\n- Use localhost for testing';
+        } else if (error.name === 'InvalidStateError') {
+            errorMessage += 'Reason: Fingerprint already registered.\n\nGo to Menu → Fingerprint Setup to re-register.';
+        } else {
+            errorMessage += 'Reason: ' + error.message + '\n\nError Type: ' + error.name;
+        }
+        
+        alert(errorMessage);
+    }
+}
+
+// Manage Fingerprint from Menu
+function manageFingerprintAuth() {
+    if (!window.PublicKeyCredential) {
+        alert('❌ Fingerprint authentication not supported!\n\nYour device/browser does not support fingerprint authentication.\n\nSupported on:\n- Android Chrome/Edge\n- iOS Safari (iPhone with Touch ID/Face ID)\n- Windows Hello\n\nPlease use password instead.');
+        toggleMenu();
+        return;
+    }
+    
+    const fingerprintEnabled = localStorage.getItem('fingerprint_enabled');
+    
+    if (fingerprintEnabled) {
+        // Already set up - show options
+        const choice = confirm('Fingerprint Authentication Status: ✅ ENABLED\n\nWhat do you want to do?\n\nOK = Re-register fingerprint\nCancel = Disable fingerprint');
+        
+        if (choice) {
+            // Re-register
+            setupFingerprint();
+        } else {
+            // Disable
+            const confirmDisable = confirm('Are you sure you want to DISABLE fingerprint authentication?\n\nYou will need to use password only.');
+            if (confirmDisable) {
+                localStorage.removeItem('fingerprint_enabled');
+                localStorage.removeItem('fingerprint_credential');
+                showSuccessPopup('Fingerprint authentication disabled!');
+                vibrateDevice([100]);
+            }
+        }
+    } else {
+        // Not set up yet
+        const setup = confirm('Fingerprint Authentication Status: ❌ NOT SET UP\n\nDo you want to set up fingerprint authentication?\n\nOK = Set up now\nCancel = Cancel');
+        if (setup) {
+            setupFingerprint();
+        }
+    }
+    
+    toggleMenu();
 }
 
 // Show empty state message
@@ -2026,7 +2426,7 @@ function loadDarkMode() {
     }
 }
 
-// Change Password Function
+// Change Password Function with PIN/Password Option
 function changePassword() {
     const oldPassword = prompt('Enter current password:');
     const savedPassword = localStorage.getItem('app_password') || '1234';
@@ -2037,21 +2437,54 @@ function changePassword() {
         return;
     }
     
-    const newPassword = prompt('Enter new password:');
-    if (!newPassword || newPassword.length < 4) {
-        alert('Password must be at least 4 characters!');
-        return;
+    // Ask user to choose password type
+    const choice = confirm('Choose Password Type:\n\nOK = 4-Digit PIN (Simple)\nCancel = Multi-Character Password (Strong)');
+    
+    let newPassword;
+    if (choice) {
+        // 4-digit PIN
+        newPassword = prompt('Enter new 4-digit PIN:\n(Example: 1234, 5678)');
+        if (!newPassword) return;
+        
+        // Validate 4-digit PIN
+        if (!/^\d{4}$/.test(newPassword)) {
+            alert('Invalid PIN! Must be exactly 4 digits (0-9 only).\nExample: 1234');
+            return;
+        }
+    } else {
+        // Multi-character password
+        newPassword = prompt('Enter new password:\n(Minimum 6 characters, can include letters, numbers, symbols)');
+        if (!newPassword) return;
+        
+        // Validate minimum length
+        if (newPassword.length < 6) {
+            alert('Password too short! Must be at least 6 characters.');
+            return;
+        }
     }
     
     const confirmPassword = prompt('Confirm new password:');
     if (newPassword !== confirmPassword) {
         alert('Passwords do not match!');
+        vibrateDevice([50, 50, 50]);
         return;
     }
     
     localStorage.setItem('app_password', newPassword);
-    vibrateDevice([100]);
-    showSuccessPopup('Password changed successfully!');
+    
+    // Save password type for reference
+    if (choice) {
+        localStorage.setItem('password_type', 'pin');
+    } else {
+        localStorage.setItem('password_type', 'password');
+    }
+    
+    vibrateDevice([100, 50, 100]);
+    if (choice) {
+        showSuccessPopup('4-Digit PIN set successfully! 🔢');
+    } else {
+        showSuccessPopup('Password changed successfully! 🔐');
+    }
     toggleMenu();
 }
 
@@ -2135,10 +2568,25 @@ function setTheme(theme) {
         blue: { primary: '#2196F3', secondary: '#21CBF3' },
         green: { primary: '#4CAF50', secondary: '#8BC34A' },
         red: { primary: '#f44336', secondary: '#e91e63' },
-        orange: { primary: '#FF9800', secondary: '#FF5722' }
+        orange: { primary: '#FF9800', secondary: '#FF5722' },
+        pink: { primary: '#e91e63', secondary: '#f06292' },
+        teal: { primary: '#009688', secondary: '#00BCD4' },
+        yellow: { primary: '#FFC107', secondary: '#FFEB3B' },
+        indigo: { primary: '#3F51B5', secondary: '#5C6BC0' },
+        cyan: { primary: '#00BCD4', secondary: '#80DEEA' },
+        lime: { primary: '#CDDC39', secondary: '#C0CA33' },
+        brown: { primary: '#795548', secondary: '#8D6E63' },
+        deeporange: { primary: '#FF5722', secondary: '#FF7043' },
+        deeppurple: { primary: '#673AB7', secondary: '#9575CD' },
+        bluegrey: { primary: '#607D8B', secondary: '#78909C' }
     };
     
     const colors = themes[theme];
+    
+    if (!colors) {
+        alert('Theme not found!');
+        return;
+    }
     
     // Update CSS variables
     document.documentElement.style.setProperty('--primary-color', colors.primary);
@@ -2173,14 +2621,171 @@ function setTheme(theme) {
     
     // Save theme preference
     localStorage.setItem('app_theme', theme);
-    showSuccessPopup('Theme changed successfully!');
+    showSuccessPopup(`Theme changed to ${theme}!`);
     vibrateDevice([100]);
     closeThemeModal();
 }
 
+// Custom Theme Function with Color Picker
+function setCustomTheme() {
+    // Create a custom modal for color picker
+    const customModal = document.createElement('div');
+    customModal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    `;
+    
+    customModal.innerHTML = `
+        <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+            <h3 style="margin-bottom: 20px; color: #667eea; text-align: center;">🎨 Custom Color Theme</h3>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Primary Color:</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="color" id="customPrimary" value="#667eea" style="width: 60px; height: 40px; border: 2px solid #ddd; border-radius: 5px; cursor: pointer;">
+                    <input type="text" id="customPrimaryText" value="#667eea" style="flex: 1; padding: 10px; border: 2px solid #ddd; border-radius: 5px; font-family: monospace;">
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Secondary Color:</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="color" id="customSecondary" value="#764ba2" style="width: 60px; height: 40px; border: 2px solid #ddd; border-radius: 5px; cursor: pointer;">
+                    <input type="text" id="customSecondaryText" value="#764ba2" style="flex: 1; padding: 10px; border: 2px solid #ddd; border-radius: 5px; font-family: monospace;">
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+                <button onclick="applyCustomTheme()" style="flex: 1; padding: 12px; background: #667eea; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600;">Apply</button>
+                <button onclick="closeCustomModal()" style="flex: 1; padding: 12px; background: #f44336; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600;">Cancel</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(customModal);
+    customModal.id = 'customColorModal';
+    
+    // Sync color picker with text input
+    const primaryPicker = document.getElementById('customPrimary');
+    const primaryText = document.getElementById('customPrimaryText');
+    const secondaryPicker = document.getElementById('customSecondary');
+    const secondaryText = document.getElementById('customSecondaryText');
+    
+    primaryPicker.addEventListener('input', (e) => {
+        primaryText.value = e.target.value;
+    });
+    
+    primaryText.addEventListener('input', (e) => {
+        const color = e.target.value;
+        if (/^#[0-9A-F]{6}$/i.test(color)) {
+            primaryPicker.value = color;
+        }
+    });
+    
+    secondaryPicker.addEventListener('input', (e) => {
+        secondaryText.value = e.target.value;
+    });
+    
+    secondaryText.addEventListener('input', (e) => {
+        const color = e.target.value;
+        if (/^#[0-9A-F]{6}$/i.test(color)) {
+            secondaryPicker.value = color;
+        }
+    });
+    
+    closeThemeModal();
+}
+
+function applyCustomTheme() {
+    const primary = document.getElementById('customPrimaryText').value;
+    const secondary = document.getElementById('customSecondaryText').value;
+    
+    // Validate hex color format
+    const hexRegex = /^#[0-9A-F]{6}$/i;
+    if (!hexRegex.test(primary) || !hexRegex.test(secondary)) {
+        alert('Invalid color format! Use 6-digit hex code like #667eea');
+        return;
+    }
+    
+    // Apply custom colors
+    document.documentElement.style.setProperty('--primary-color', primary);
+    document.documentElement.style.setProperty('--secondary-color', secondary);
+    
+    // Update header and buttons
+    const header = document.querySelector('header');
+    const menuHeader = document.querySelector('.menu-header');
+    const searchBtns = document.querySelectorAll('.search-section button:not(.camera-btn):not(.clear-btn):not(.filter-toggle-btn)');
+    const modalBtns = document.querySelectorAll('.modal-content button');
+    const toggleBtns = document.querySelectorAll('.toggle-btn.primary');
+    
+    if (header) header.style.background = primary;
+    if (menuHeader) menuHeader.style.background = primary;
+    
+    searchBtns.forEach(btn => {
+        btn.style.background = primary;
+    });
+    
+    modalBtns.forEach(btn => {
+        btn.style.background = primary;
+    });
+    
+    toggleBtns.forEach(btn => {
+        btn.style.background = primary;
+    });
+    
+    // Update body gradient
+    if (!document.body.classList.contains('dark-mode')) {
+        document.body.style.background = `linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`;
+    }
+    
+    // Save custom theme
+    localStorage.setItem('app_theme', 'custom');
+    localStorage.setItem('custom_primary', primary);
+    localStorage.setItem('custom_secondary', secondary);
+    
+    showSuccessPopup('Custom theme applied!');
+    vibrateDevice([100]);
+    closeCustomModal();
+}
+
+function closeCustomModal() {
+    const modal = document.getElementById('customColorModal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
 function loadTheme() {
     const theme = localStorage.getItem('app_theme') || 'default';
-    if (theme !== 'default') {
+    
+    if (theme === 'custom') {
+        // Load custom colors
+        const primary = localStorage.getItem('custom_primary');
+        const secondary = localStorage.getItem('custom_secondary');
+        
+        if (primary && secondary) {
+            document.documentElement.style.setProperty('--primary-color', primary);
+            document.documentElement.style.setProperty('--secondary-color', secondary);
+            
+            const header = document.querySelector('header');
+            const menuHeader = document.querySelector('.menu-header');
+            
+            if (header) header.style.background = primary;
+            if (menuHeader) menuHeader.style.background = primary;
+            
+            if (!document.body.classList.contains('dark-mode')) {
+                document.body.style.background = `linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`;
+            }
+        }
+    } else if (theme !== 'default') {
         setTheme(theme);
     }
 }
@@ -2473,6 +3078,347 @@ function closeScanner() {
     } else {
         modal.classList.remove('active');
     }
+}
+
+// Download User Guide PDF
+function downloadUserGuide() {
+    try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        let y = 20;
+        
+        // Title
+        doc.setFontSize(24);
+        doc.setTextColor(102, 126, 234);
+        doc.text('P Code Verify', 105, y, { align: 'center' });
+        y += 10;
+        doc.setFontSize(16);
+        doc.text('Complete User Guide', 105, y, { align: 'center' });
+        y += 15;
+        
+        // Section 1: Getting Started
+        doc.setFontSize(14);
+        doc.setTextColor(102, 126, 234);
+        doc.text('1. GETTING STARTED', 20, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        doc.text('Default Password: 1234', 25, y);
+        y += 6;
+        doc.text('Enter password to unlock the app', 25, y);
+        y += 6;
+        doc.text('Use fingerprint icon (green circle) for quick access', 25, y);
+        y += 12;
+        
+        // Section 2: Main Features
+        doc.setFontSize(14);
+        doc.setTextColor(102, 126, 234);
+        doc.text('2. MAIN FEATURES', 20, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        
+        doc.text('Search Products:', 25, y);
+        y += 6;
+        doc.text('  - Type PCode, SKU, Case G/Case, Pouch G/Case, or Bulk G/Case', 30, y);
+        y += 6;
+        doc.text('  - Press Search button or Enter key', 30, y);
+        y += 6;
+        doc.text('  - Sound & vibration on results found', 30, y);
+        y += 10;
+        
+        doc.text('QR/Barcode Scanner:', 25, y);
+        y += 6;
+        doc.text('  - Click camera button', 30, y);
+        y += 6;
+        doc.text('  - Point camera at QR/Barcode', 30, y);
+        y += 6;
+        doc.text('  - Auto-search after scan', 30, y);
+        y += 12;
+        
+        // Section 3: Data Management
+        doc.setFontSize(14);
+        doc.setTextColor(102, 126, 234);
+        doc.text('3. DATA MANAGEMENT', 20, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        
+        doc.text('Upload CSV File:', 25, y);
+        y += 6;
+        doc.text('  - Menu > Upload File (CSV/Excel)', 30, y);
+        y += 6;
+        doc.text('  - Select your CSV file', 30, y);
+        y += 6;
+        doc.text('  - Data imported automatically', 30, y);
+        y += 10;
+        
+        doc.text('Download CSV Template:', 25, y);
+        y += 6;
+        doc.text('  - Menu > Download CSV Template', 30, y);
+        y += 6;
+        doc.text('  - Fill template with your data', 30, y);
+        y += 6;
+        doc.text('  - Upload filled template', 30, y);
+        y += 10;
+        
+        doc.text('Add Manual Data:', 25, y);
+        y += 6;
+        doc.text('  - Menu > Add Manual Data', 30, y);
+        y += 6;
+        doc.text('  - Fill all required fields', 30, y);
+        y += 6;
+        doc.text('  - Enter password to save', 30, y);
+        y += 6;
+        doc.text('  - Duplicate PCode? Confirm to update', 30, y);
+        y += 12;
+        
+        // New Page
+        doc.addPage();
+        y = 20;
+        
+        // Section 4: CSV Template Structure
+        doc.setFontSize(14);
+        doc.setTextColor(102, 126, 234);
+        doc.text('4. CSV TEMPLATE STRUCTURE (19 Columns)', 20, y);
+        y += 8;
+        doc.setFontSize(9);
+        doc.setTextColor(0, 0, 0);
+        
+        const columns = [
+            '1. PCode - Product Code (Required)',
+            '2. SKU - Description/SKU',
+            '3. BulkGCase - Bulk G/Case',
+            '4. MRPOld - Old MRP (Rs.)',
+            '5. MRPNew - New MRP (Rs.)',
+            '6. PerUnitMRP - Per Unit MRP',
+            '7. PouchGCase - Pouch G/Case',
+            '8. CaseGCase - Case G/Case',
+            '9. ZPartition - Z Partition',
+            '10. CasePouch - Case/Pouch',
+            '11. PalletShipper - Pallet/Shipper',
+            '12. LSL - Lower Specification Limit',
+            '13. Target - Target Weight',
+            '14. USL - Upper Specification Limit',
+            '15. Tera - Tera (e.g., 21.23-25.29-27.21)',
+            '16. SecLsl - Secondary LSL',
+            '17. SecTarget - Secondary Target',
+            '18. SecUsl - Secondary USL',
+            '19. SecTera - Secondary Tera'
+        ];
+        
+        columns.forEach(col => {
+            doc.text(col, 25, y);
+            y += 5;
+        });
+        
+        y += 5;
+        doc.setFontSize(10);
+        doc.text('Note: Secondary columns 7-11 use same values as Primary', 25, y);
+        y += 15;
+        
+        // Section 5: Password & Security
+        doc.setFontSize(14);
+        doc.setTextColor(102, 126, 234);
+        doc.text('5. PASSWORD & SECURITY', 20, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        
+        doc.text('Change Password:', 25, y);
+        y += 6;
+        doc.text('  - Menu > Change Password', 30, y);
+        y += 6;
+        doc.text('  - Enter current password', 30, y);
+        y += 6;
+        doc.text('  - Choose: 4-Digit PIN or Multi-Character Password', 30, y);
+        y += 6;
+        doc.text('  - 4-Digit PIN: Exactly 4 numbers (e.g., 1234)', 30, y);
+        y += 6;
+        doc.text('  - Strong Password: Min 6 characters (e.g., MyApp@123)', 30, y);
+        y += 10;
+        
+        doc.text('Fingerprint Setup:', 25, y);
+        y += 6;
+        doc.text('  - Menu > Fingerprint Setup', 30, y);
+        y += 6;
+        doc.text('  - Enter password to verify', 30, y);
+        y += 6;
+        doc.text('  - Place finger on sensor', 30, y);
+        y += 6;
+        doc.text('  - Fingerprint registered!', 30, y);
+        y += 6;
+        doc.text('  - Requirements: HTTPS, Modern browser, Fingerprint sensor', 30, y);
+        y += 15;
+        
+        // New Page
+        doc.addPage();
+        y = 20;
+        
+        // Section 6: Customization
+        doc.setFontSize(14);
+        doc.setTextColor(102, 126, 234);
+        doc.text('6. CUSTOMIZATION', 20, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        
+        doc.text('Change Theme:', 25, y);
+        y += 6;
+        doc.text('  - Menu > Change Theme', 30, y);
+        y += 6;
+        doc.text('  - 16 pre-built themes available', 30, y);
+        y += 6;
+        doc.text('  - Custom Color: Choose your own colors', 30, y);
+        y += 6;
+        doc.text('  - Primary & Secondary color selection', 30, y);
+        y += 10;
+        
+        doc.text('Dark Mode:', 25, y);
+        y += 6;
+        doc.text('  - Click moon/sun icon in header', 30, y);
+        y += 6;
+        doc.text('  - Or Menu > Dark Mode', 30, y);
+        y += 6;
+        doc.text('  - Saves preference automatically', 30, y);
+        y += 15;
+        
+        // Section 7: Product Cards
+        doc.setFontSize(14);
+        doc.setTextColor(102, 126, 234);
+        doc.text('7. PRODUCT CARDS', 20, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        
+        doc.text('Primary/Secondary Tabs:', 25, y);
+        y += 6;
+        doc.text('  - Click PRIMARY tab: View primary weight data', 30, y);
+        y += 6;
+        doc.text('  - Click SECONDARY tab: View secondary weight data', 30, y);
+        y += 10;
+        
+        doc.text('Card Actions:', 25, y);
+        y += 6;
+        doc.text('  - Edit: Modify product data (password required)', 30, y);
+        y += 6;
+        doc.text('  - Delete: Remove product (password required)', 30, y);
+        y += 6;
+        doc.text('  - Share: Share via WhatsApp or Copy to clipboard', 30, y);
+        y += 15;
+        
+        // Section 8: Advanced Features
+        doc.setFontSize(14);
+        doc.setTextColor(102, 126, 234);
+        doc.text('8. ADVANCED FEATURES', 20, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        
+        doc.text('Filters:', 25, y);
+        y += 6;
+        doc.text('  - Click filter button (down arrow)', 30, y);
+        y += 6;
+        doc.text('  - Set price range (Min/Max)', 30, y);
+        y += 6;
+        doc.text('  - Sort by: PCode, Price (Low-High, High-Low)', 30, y);
+        y += 10;
+        
+        doc.text('Result Count:', 25, y);
+        y += 6;
+        doc.text('  - Shows when multiple results found', 30, y);
+        y += 6;
+        doc.text('  - Displays total matching products', 30, y);
+        y += 10;
+        
+        doc.text('Compact View:', 25, y);
+        y += 6;
+        doc.text('  - Multiple results show in compact cards', 30, y);
+        y += 6;
+        doc.text('  - Single result shows full details', 30, y);
+        y += 15;
+        
+        // Section 9: Tips & Tricks
+        doc.setFontSize(14);
+        doc.setTextColor(102, 126, 234);
+        doc.text('9. TIPS & TRICKS', 20, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        
+        doc.text('- Use QR scanner for quick product lookup', 25, y);
+        y += 6;
+        doc.text('- Download CSV template before adding bulk data', 25, y);
+        y += 6;
+        doc.text('- Enable fingerprint for faster login', 25, y);
+        y += 6;
+        doc.text('- Use dark mode to save battery', 25, y);
+        y += 6;
+        doc.text('- Share products directly via WhatsApp', 25, y);
+        y += 6;
+        doc.text('- Search works on multiple fields simultaneously', 25, y);
+        y += 6;
+        doc.text('- Password protects all data operations', 25, y);
+        y += 15;
+        
+        // Section 10: Troubleshooting
+        doc.setFontSize(14);
+        doc.setTextColor(102, 126, 234);
+        doc.text('10. TROUBLESHOOTING', 20, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        
+        doc.text('Fingerprint not working?', 25, y);
+        y += 6;
+        doc.text('  - Ensure HTTPS connection (not HTTP)', 30, y);
+        y += 6;
+        doc.text('  - Check device has fingerprint sensor', 30, y);
+        y += 6;
+        doc.text('  - Use modern browser (Chrome, Edge, Safari)', 30, y);
+        y += 10;
+        
+        doc.text('Data not showing?', 25, y);
+        y += 6;
+        doc.text('  - Use search to find products', 30, y);
+        y += 6;
+        doc.text('  - Check if data was uploaded successfully', 30, y);
+        y += 10;
+        
+        doc.text('Scanner not working?', 25, y);
+        y += 6;
+        doc.text('  - Allow camera permission', 30, y);
+        y += 6;
+        doc.text('  - Ensure good lighting', 30, y);
+        y += 15;
+        
+        // Footer
+        doc.setFontSize(8);
+        doc.setTextColor(150, 150, 150);
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.text(`Page ${i} of ${pageCount}`, 105, 285, { align: 'center' });
+            doc.text('P Code Verify - User Guide', 20, 285);
+            doc.text(new Date().toLocaleDateString(), 190, 285, { align: 'right' });
+        }
+        
+        // Save PDF
+        doc.save('P_Code_Verify_User_Guide.pdf');
+        vibrateDevice([100]);
+        showSuccessPopup('User Guide downloaded! 📖');
+        toggleMenu();
+    } catch (error) {
+        console.error('Error generating guide:', error);
+        alert('Error generating user guide: ' + error.message);
+    }
+}
+
+// Download APK function placeholder
+function downloadAPK() {
+    alert('📱 APK Download\n\nTo create APK:\n\n1. Use Cordova (see APK-KAISE-BANAYE.txt)\n2. Or use online tools like:\n   - PWA Builder (pwabuilder.com)\n   - APK Generator\n\n3. Upload to GitHub Pages first\n4. Then convert to APK');
+    toggleMenu();
 }
     </script>
 </body>
