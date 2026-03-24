@@ -722,6 +722,7 @@ body.dark-mode .delete-card-btn:hover {
     text-align: center;
     max-width: 400px;
     width: 90%;
+    position: relative;
 }
 
 .password-box h2 {
@@ -1198,10 +1199,12 @@ body.dark-mode .corner {
     <div id="passwordScreen" class="password-screen">
         <div class="password-box">
             <div class="lock-icon">🔒</div>
-            <!-- Location Dot only -->
+            <!-- Location Dot — right side -->
             <div style="position:absolute;top:15px;right:15px;display:flex;align-items:center;gap:6px;">
                 <div id="locationDot" style="width:14px;height:14px;border-radius:50%;background:#ccc;box-shadow:0 0 6px rgba(0,0,0,0.3);transition:background 0.5s;" title="Location Status"></div>
             </div>
+            <!-- Guide ? button — left side -->
+            <div onclick="openUserGuide()" style="position:absolute;top:12px;left:15px;width:26px;height:26px;background:rgba(102,126,234,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:700;color:#667eea;border:1.5px solid #667eea;" title="User Guide">?</div>
             <h2>Digital Control Copy</h2>
             <p>Enter password to access</p>
             <div id="gpsWarning" style="display:none;color:#f44336;font-size:12px;font-weight:600;margin-bottom:8px;text-align:center;"></div>
@@ -1274,8 +1277,8 @@ body.dark-mode .corner {
             <div class="menu-item" onclick="openLocationSettings()">
                 <span>📍 Location Settings</span>
             </div>
-            <div class="menu-item" onclick="downloadUserGuide()">
-                <span>📖 How to Use (Guide)</span>
+            <div class="menu-item" onclick="openFullGuide();toggleMenu()">
+                <span>📖 Guide</span>
             </div>
             <div class="menu-item" onclick="downloadAPK()"><span>📱 Download APK for Android</span></div>
             <div class="menu-item" onclick="openApiSettings()">
@@ -3233,45 +3236,137 @@ function closeScanner() {
     }
 }
 
-// Download User Guide PDF
-function downloadUserGuide() {
-    try {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        let y = 20;
-        
-        // Title
-        doc.setFontSize(24);
-        doc.setTextColor(102, 126, 234);
-        doc.text('Digital Control Copy', 105, y, { align: 'center' });
-        y += 10;
-        doc.setFontSize(16);
-        doc.text('Complete User Guide', 105, y, { align: 'center' });
-        y += 15;
-        
-        // Section 1: Getting Started
-        doc.setFontSize(14);
-        doc.setTextColor(102, 126, 234);
-        doc.text('1. GETTING STARTED', 20, y);
-        y += 8;
-        doc.setFontSize(10);
-        doc.setTextColor(0, 0, 0);
-        doc.text('Default Password: 1234', 25, y);
-        y += 6;
-        doc.text('Enter password to unlock the app', 25, y);
-        y += 6;
-        doc.text('Use fingerprint icon (green circle) for quick access', 25, y);
-        y += 12;
-        
-        // Section 2: Main Features
-        doc.setFontSize(14);
+// User Guide popup
+function downloadUserGuide() { openUserGuide(); }
+
+var _guideLang = 'en';
+
+function _guideContent(mode, lang) {
+    const en = {
+        quick: {
+            title: 'Quick Guide',
+            s1h: '1. Login / Lock Screen',
+            s1b: 'Enter your Admin or User password to unlock.<br>Admin login: data sync only, no location check.<br>User login: if Location Lock is ON, GPS will be checked.<br>Blue button = Admin fingerprint &nbsp;|&nbsp; Green button = User fingerprint.<br>First fingerprint tap: enter password to register.<br>Next tap: opens directly via fingerprint.<br>? button on lock screen: opens this guide.',
+            s2h: '2. Search &amp; Scan',
+            s2b: 'Search by PCode, SKU, Case G/Case, Pouch G/Case, Bulk G/Case.<br>📷 Camera button: scan QR/Barcode, auto-search.<br>✖ button: clear search.<br>🔽 Filter button: price range &amp; sort options.'
+        },
+        full: {
+            title: 'User Guide',
+            s1h: '1. Login / Lock Screen',
+            s1b: 'Enter Admin or User password to unlock.<br>Admin: data sync only, no location check.<br>User: GPS checked if Location Lock is ON.<br>Blue = Admin fingerprint &nbsp;|&nbsp; Green = User fingerprint.<br>First tap: register with password. Next tap: direct access.',
+            s2h: '2. Search &amp; Scan',
+            s2b: 'Search by PCode, SKU, Case G/Case, Pouch G/Case, Bulk G/Case.<br>📷 Scan QR/Barcode — auto search.<br>✖ Clear search &nbsp;|&nbsp; 🔽 Filter: price range &amp; sort.',
+            s3h: '3. Data Management',
+            s3b: 'Upload CSV/Excel: Menu &gt; Upload File.<br>Template: Menu &gt; Download CSV Template.<br>Manual entry: Menu &gt; Add Manual Data.<br>Edit/Delete: tap button on card (password required).<br>Share: WhatsApp or clipboard.',
+            s4h: '4. CSV Format (19 Columns)',
+            s4b: 'PCode, SKU, BulkGCase, MRPOld, MRPNew, PerUnitMRP,<br>PouchGCase, CaseGCase, ZPartition, CasePouch, PalletShipper,<br>LSL, Target, USL, Tera, SecLsl, SecTarget, SecUsl, SecTera.',
+            s5h: '5. Password &amp; Security',
+            s5b: 'Change Admin Password: Menu &gt; Change Admin Password.<br>Change User Password: Menu &gt; Change User Password (admin only, syncs to server).<br>Fingerprint Setup: Menu &gt; Fingerprint Setup.',
+            s6h: '6. Location Lock',
+            s6b: 'Menu &gt; Location Settings (admin password required).<br>Set Location 1 &amp; 2 (use Auto button to fill GPS).<br>Set radius in meters. Enable Location Lock checkbox.<br>User out of range: red warning + data blocked.<br>Admin: location never checked.',
+            s7h: '7. Online Sync (JSONBin)',
+            s7b: 'Menu &gt; API / Bin ID Settings.<br>Admin device: enter API Key + Bin ID.<br>User device: enter Bin ID only (read-only).<br>Refresh button: sync data + location.',
+            s8h: '8. Customization',
+            s8b: 'Theme: Menu &gt; Change Theme (16 themes + custom color).<br>Dark Mode: moon icon in header or Menu &gt; Dark Mode.',
+            s9h: '9. Troubleshooting',
+            s9b: 'Fingerprint not working: needs HTTPS, modern browser, fingerprint sensor.<br>Scanner not working: allow camera permission.<br>Location mismatch: turn on GPS, increase radius.<br>Sync failed: check API Key and Bin ID.'
+        }
+    };
+    const hi = {
+        quick: {
+            title: 'Quick Guide',
+            s1h: '1. Login / Lock Screen',
+            s1b: 'Admin ya User password dalo unlock karne ke liye.<br>Admin login: sirf data sync, location check nahi.<br>User login: agar Location Lock ON hai to GPS check hoga.<br>Blue button = Admin fingerprint &nbsp;|&nbsp; Green = User fingerprint.<br>Pehli baar tap: password dalo register karne ke liye.<br>Dobara tap: fingerprint se seedha open.<br>Lock screen pe ? button: ye guide khulega.',
+            s2h: '2. Search &amp; Scan',
+            s2b: 'PCode, SKU, Case G/Case, Pouch G/Case, Bulk G/Case se search karo.<br>📷 Camera button: QR/Barcode scan, auto search.<br>✖ button: search clear karo.<br>🔽 Filter: price range aur sort options.'
+        },
+        full: {
+            title: 'User Guide',
+            s1h: '1. Login / Lock Screen',
+            s1b: 'Admin ya User password dalo unlock karne ke liye.<br>Admin: sirf data sync, location check nahi.<br>User: agar Location Lock ON hai to GPS check hoga.<br>Blue = Admin fingerprint &nbsp;|&nbsp; Green = User fingerprint.<br>Pehli tap: password se register. Dobara tap: seedha open.',
+            s2h: '2. Search &amp; Scan',
+            s2b: 'PCode, SKU, Case G/Case, Pouch G/Case, Bulk G/Case se search karo.<br>📷 QR/Barcode scan — auto search.<br>✖ Search clear &nbsp;|&nbsp; 🔽 Filter: price range aur sort.',
+            s3h: '3. Data Management',
+            s3b: 'Upload CSV/Excel: Menu &gt; Upload File.<br>Template: Menu &gt; Download CSV Template.<br>Manual entry: Menu &gt; Add Manual Data.<br>Edit/Delete: card pe button tap karo (password required).<br>Share: WhatsApp ya clipboard.',
+            s4h: '4. CSV Format (19 Columns)',
+            s4b: 'PCode, SKU, BulkGCase, MRPOld, MRPNew, PerUnitMRP,<br>PouchGCase, CaseGCase, ZPartition, CasePouch, PalletShipper,<br>LSL, Target, USL, Tera, SecLsl, SecTarget, SecUsl, SecTera.',
+            s5h: '5. Password &amp; Security',
+            s5b: 'Admin Password change: Menu &gt; Change Admin Password.<br>User Password change: Menu &gt; Change User Password (admin only, server sync hoga).<br>Fingerprint Setup: Menu &gt; Fingerprint Setup.',
+            s6h: '6. Location Lock',
+            s6b: 'Menu &gt; Location Settings (admin password required).<br>Location 1 &amp; 2 set karo (Auto button se GPS fill hoga).<br>Radius meters mein set karo. Enable Location Lock checkbox ON karo.<br>User range se bahar: red warning + data block.<br>Admin ke liye location check kabhi nahi hoga.',
+            s7h: '7. Online Sync (JSONBin)',
+            s7b: 'Menu &gt; API / Bin ID Settings.<br>Admin device: API Key + Bin ID dono dalo.<br>User device: sirf Bin ID dalo (read-only).<br>Refresh button: data + location sync.',
+            s8h: '8. Customization',
+            s8b: 'Theme: Menu &gt; Change Theme (16 themes + custom color).<br>Dark Mode: header moon icon ya Menu &gt; Dark Mode.',
+            s9h: '9. Troubleshooting',
+            s9b: 'Fingerprint kaam nahi: HTTPS chahiye, modern browser, fingerprint sensor.<br>Scanner kaam nahi: camera permission allow karo.<br>Location match nahi: GPS on karo, radius badhao.<br>Sync fail: API Key aur Bin ID check karo.'
+        }
+    };
+    return lang === 'hi' ? hi[mode] : en[mode];
+}
+
+function _buildGuideHTML(mode) {
+    const lang = _guideLang;
+    const d = _guideContent(mode, lang);
+    const otherLang = lang === 'en' ? 'hi' : 'en';
+    const btnLabel = lang === 'en' ? '🇮🇳 हिंदी' : '🇬🇧 English';
+    const colors = ['#e8f0fe','#e8f5e9','#fff3e0','#fce4ec','#e8f0fe','#e8f5e9','#fff3e0','#fce4ec','#e8f0fe'];
+    const hcolors = ['#667eea','#4CAF50','#FF9800','#e91e63','#667eea','#4CAF50','#FF9800','#e91e63','#667eea'];
+
+    let sections = '';
+    if (mode === 'quick') {
+        sections = `<div style="background:${colors[0]};border-radius:10px;padding:12px 14px;margin-bottom:14px;"><b style="color:${hcolors[0]};">${d.s1h}</b><br>${d.s1b}</div><div style="background:${colors[1]};border-radius:10px;padding:12px 14px;margin-bottom:0;"><b style="color:${hcolors[1]};">${d.s2h}</b><br>${d.s2b}</div>`;
+    } else {
+        const keys = ['s1','s2','s3','s4','s5','s6','s7','s8','s9'];
+        keys.forEach((k,i) => {
+            sections += `<div style="background:${colors[i]};border-radius:10px;padding:12px 14px;margin-bottom:14px;"><b style="color:${hcolors[i]};">${d[k+'h']}</b><br>${d[k+'b']}</div>`;
+        });
+    }
+
+    return `<div style="background:white;border-radius:16px;width:100%;max-width:500px;box-shadow:0 10px 40px rgba(0,0,0,0.4);margin:auto;overflow:hidden;">
+<div style="background:linear-gradient(135deg,#667eea,#764ba2);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;">
+  <div><div style="color:white;font-size:17px;font-weight:700;">&#128214; ${d.title}</div><div style="color:rgba(255,255,255,0.8);font-size:11px;">P Code Verify</div></div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button onclick="_guideLang='${otherLang}';document.getElementById('guideBody').innerHTML=_buildGuideHTML('${mode}');" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.5);color:white;padding:4px 10px;border-radius:20px;cursor:pointer;font-size:12px;">${btnLabel}</button>
+    <span onclick="document.getElementById('userGuideModal').remove()" style="color:white;font-size:24px;cursor:pointer;line-height:1;">&times;</span>
+  </div>
+</div>
+<div id="guideBody" style="padding:16px;font-size:13px;color:#333;line-height:1.7;max-height:78vh;overflow-y:auto;">${sections}</div>
+</div>`;
+}
+
+function openUserGuide() {
+    const existing = document.getElementById('userGuideModal');
+    if (existing) { existing.remove(); return; }
+    const modal = document.createElement('div');
+    modal.id = 'userGuideModal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;justify-content:center;align-items:flex-start;padding:15px;box-sizing:border-box;z-index:99999;overflow-y:auto;';
+    modal.innerHTML = _buildGuideHTML('quick');
+    document.body.appendChild(modal);
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+}
+
+function openFullGuide() {
+    const existing = document.getElementById('userGuideModal');
+    if (existing) { existing.remove(); return; }
+    const modal = document.createElement('div');
+    modal.id = 'userGuideModal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;justify-content:center;align-items:flex-start;padding:15px;box-sizing:border-box;z-index:99999;overflow-y:auto;';
+    modal.innerHTML = _buildGuideHTML('full');
+    document.body.appendChild(modal);
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+}
+
+// Download APK function placeholder
+function downloadAPK() {
+    alert('📱 APK Download\n\nTo create APK:\n\n1. Use Cordova (see APK-KAISE-BANAYE.txt)\n2. Or use online tools like:\n   - PWA Builder (pwabuilder.com)\n   - APK Generator\n\n3. Upload to GitHub Pages first\n4. Then convert to APK');
+    toggleMenu();
+} 
         doc.setTextColor(102, 126, 234);
         doc.text('2. MAIN FEATURES', 20, y);
         y += 8;
         doc.setFontSize(10);
         doc.setTextColor(0, 0, 0);
-        
         doc.text('Search Products:', 25, y);
         y += 6;
         doc.text('  - Type PCode, SKU, Case G/Case, Pouch G/Case, or Bulk G/Case', 30, y);
@@ -3557,20 +3652,10 @@ function downloadUserGuide() {
             doc.text(new Date().toLocaleDateString(), 190, 285, { align: 'right' });
         }
         
-        // Save PDF
-        doc.save('P_Code_Verify_User_Guide.pdf');
-        vibrateDevice([100]);
-        showSuccessPopup('User Guide downloaded! 📖');
-        toggleMenu();
-    } catch (error) {
-        console.error('Error generating guide:', error);
-        alert('Error generating user guide: ' + error.message);
-    }
-}
 
 // Download APK function placeholder
 function downloadAPK() {
-    alert(' Coming soon');
+    alert('📱 COMING SOON');
     toggleMenu();
 }
 
