@@ -13,6 +13,13 @@
     <title>P Code Verify</title>
     <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+    // JSONBin API Config
+    const JSONBIN_CONFIG = {
+        apiKey: '$2a$10$7yKDK4eU8xJnFHJDzssaBuJvnDVw4iulb2F0faX2fJBFaziBWXiTG',
+        binId:   '69be6b9cb7ec241ddc8b64c7'
+    };
+    </script>
     <style>
 * {
     margin: 0;
@@ -202,31 +209,35 @@ h1 {
 
 .search-section {
     background: white;
-    padding: 20px;
+    padding: clamp(10px, 2vw, 20px);
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     margin-bottom: 20px;
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: clamp(6px, 1.5vw, 10px);
+    align-items: center;
 }
 
 #searchInput {
-    flex: 1;
-    padding: 12px;
+    flex: 1 1 120px;
+    min-width: 0;
+    padding: clamp(8px, 1.5vw, 12px);
     border: 2px solid #667eea;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: clamp(13px, 2vw, 16px);
 }
 
 .search-section button {
-    padding: 12px 24px;
+    padding: clamp(8px, 1.5vw, 12px) clamp(10px, 2vw, 24px);
     background: #667eea;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: clamp(13px, 2vw, 16px);
     transition: background 0.3s;
+    white-space: nowrap;
 }
 
 .search-section button:hover {
@@ -234,13 +245,13 @@ h1 {
 }
 
 .camera-btn {
-    padding: 12px 20px;
+    padding: clamp(8px, 1.5vw, 12px) clamp(10px, 2vw, 20px);
     background: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: clamp(16px, 2.5vw, 20px);
     transition: background 0.3s;
 }
 
@@ -249,13 +260,13 @@ h1 {
 }
 
 .clear-btn {
-    padding: 12px 20px;
+    padding: clamp(8px, 1.5vw, 12px) clamp(10px, 2vw, 20px);
     background: #f44336;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: clamp(13px, 2vw, 16px);
     transition: background 0.3s;
 }
 
@@ -1064,25 +1075,39 @@ body.dark-mode .corner {
     box-shadow: 0 0 15px #00ff00;
 }
 
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+.dot-blink {
+    animation: blink 1s infinite;
+}
+
 @media (max-width: 768px) {
     .search-section {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 8px;
+        padding: 12px;
+        gap: 6px;
     }
     #searchInput {
-        flex: 1;
-        min-width: 120px;
+        flex: 1 1 100px;
+        font-size: 14px;
+        padding: 10px 8px;
     }
     .search-section button {
-        padding: 12px 14px;
-        font-size: 14px;
+        padding: 10px 12px;
+        font-size: 13px;
     }
     .camera-btn {
-        padding: 12px 14px;
+        padding: 10px 12px;
+        font-size: 18px;
     }
     .clear-btn {
-        padding: 12px 14px;
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    .filter-toggle-btn {
+        padding: 10px 12px;
+        font-size: 13px;
     }
     .modal-content {
         width: 95%;
@@ -1106,18 +1131,30 @@ body.dark-mode .corner {
 
 @media (max-width: 480px) {
     .container {
-        padding: 0 10px;
+        padding: 0 8px;
     }
     .search-section {
-        padding: 15px;
+        padding: 8px;
+        gap: 5px;
     }
     #searchInput {
-        font-size: 14px;
-        min-width: 100px;
+        font-size: 13px;
+        padding: 9px 7px;
+        min-width: 80px;
     }
     .search-section button {
-        padding: 10px 12px;
-        font-size: 14px;
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+    .camera-btn {
+        padding: 9px 10px;
+        font-size: 16px;
+    }
+    .clear-btn {
+        padding: 9px 10px;
+    }
+    .filter-toggle-btn {
+        padding: 9px 10px;
     }
     .section-toggle {
         font-size: 14px;
@@ -1134,6 +1171,25 @@ body.dark-mode .corner {
         padding: 8px 12px;
     }
 }
+
+@media (min-width: 1024px) {
+    .search-section {
+        padding: 20px;
+        gap: 12px;
+    }
+    #searchInput {
+        font-size: 16px;
+        padding: 13px 15px;
+    }
+    .search-section button {
+        padding: 13px 26px;
+        font-size: 16px;
+    }
+    .camera-btn {
+        padding: 13px 22px;
+        font-size: 22px;
+    }
+}
     </style>
 </head>
 
@@ -1142,12 +1198,29 @@ body.dark-mode .corner {
     <div id="passwordScreen" class="password-screen">
         <div class="password-box">
             <div class="lock-icon">🔒</div>
+            <!-- Location Dot only -->
+            <div style="position:absolute;top:15px;right:15px;display:flex;align-items:center;gap:6px;">
+                <div id="locationDot" style="width:14px;height:14px;border-radius:50%;background:#ccc;box-shadow:0 0 6px rgba(0,0,0,0.3);transition:background 0.5s;" title="Location Status"></div>
+            </div>
             <h2>P Code Verify</h2>
             <p>Enter password to access</p>
+            <div id="gpsWarning" style="display:none;color:#f44336;font-size:12px;font-weight:600;margin-bottom:8px;text-align:center;"></div>
             <input type="password" id="passwordInput" placeholder="Enter Password" onkeypress="if(event.key==='Enter') checkPassword()">
             <button onclick="checkPassword()">Unlock</button>
-            <div onclick="useFingerprintAuth()" style="width: 50px; height: 50px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 15px auto 0; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 10px rgba(76, 175, 80, 0.3);" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                <span style="font-size: 28px;">👆</span>
+            <!-- Two fingerprint buttons -->
+            <div style="display:flex;justify-content:center;gap:30px;margin-top:15px;">
+                <div style="text-align:center;">
+                    <div onclick="useFingerprintAuth('admin')" style="width:50px;height:50px;background:#667eea;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto;cursor:pointer;transition:all 0.3s;box-shadow:0 2px 10px rgba(102,126,234,0.4);" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        <span style="font-size:24px;">👆</span>
+                    </div>
+                    <p style="font-size:10px;color:#667eea;margin-top:4px;font-weight:600;">Admin</p>
+                </div>
+                <div style="text-align:center;">
+                    <div onclick="useFingerprintAuth('view')" style="width:50px;height:50px;background:#4CAF50;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto;cursor:pointer;transition:all 0.3s;box-shadow:0 2px 10px rgba(76,175,80,0.4);" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        <span style="font-size:24px;">👆</span>
+                    </div>
+                    <p style="font-size:10px;color:#4CAF50;margin-top:4px;font-weight:600;">User</p>
+                </div>
             </div>
             <p class="password-error" id="passwordError"></p>
         </div>
@@ -1189,29 +1262,46 @@ body.dark-mode .corner {
                 <span>🎨 Change Theme</span>
             </div>
             <div class="menu-item" onclick="changePassword()">
-                <span>🔑 Change Password</span>
+                <span>🔑 Change Admin Password</span>
             </div>
+            <div class="menu-item" onclick="changeUserPassword()">
+                <span>🔑 Change User Password</span>
+            </div>
+
             <div class="menu-item" onclick="manageFingerprintAuth()">
                 <span>👆 Fingerprint Setup</span>
+            </div>
+            <div class="menu-item" onclick="openLocationSettings()">
+                <span>📍 Location Settings</span>
             </div>
             <div class="menu-item" onclick="downloadUserGuide()">
                 <span>📖 How to Use (Guide)</span>
             </div>
             <div class="menu-item" onclick="downloadAPK()"><span>📱 Download APK for Android</span></div>
+            <div class="menu-item" onclick="openApiSettings()">
+                <span>🔗 API / Bin ID Settings</span>
+            </div>
+            <div class="menu-item" onclick="logoutApp()" style="border-top: 2px solid #f44336;">
+                <span style="color:#f44336;">🚪 Logout</span>
+            </div>
         </div>
     </div>
 
     <div class="container">
         <div class="search-section">
             <input type="text" id="searchInput" placeholder="Search by PCode, SKU, Case G/Case, Pouch G/Case..." onkeyup="searchData()">
-            <button onclick="searchData()">🔍 Search</button>
             <button class="camera-btn" onclick="openScanner()">📷</button>
             <button class="clear-btn" onclick="clearSearch()" title="Clear Search">✖</button>
             <button class="filter-toggle-btn" onclick="toggleFilters()" title="Toggle Filters">🔽</button>
+            <!-- Location dot + Refresh — search row mein -->
+            <div style="display:flex;align-items:center;gap:5px;padding:0 4px;">
+                <div id="mainLocationDot" class="dot-blink" style="width:12px;height:12px;border-radius:50%;background:#ccc;box-shadow:0 0 6px rgba(0,0,0,0.3);flex-shrink:0;" title="Location Status"></div>
+                <button onclick="refreshLocationAndSync()" title="Location & Server Refresh" style="background:#667eea;border:none;cursor:pointer;font-size:16px;padding:8px 12px;border-radius:5px;color:white;line-height:1;">🔄</button>
+            </div>
         </div>
 
-        <div id="resultCount" style="display: none; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; text-align: center; font-size: 18px; font-weight: 600; color: #667eea;">
-            <span id="countText"></span>
+        <div id="resultCount" style="display:none;background:white;padding:10px 15px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.1);margin-bottom:20px;">
+            <span id="countText" style="font-size:16px;font-weight:600;color:#667eea;"></span>
         </div>
 
         <div class="filter-panel" id="filterPanel" style="display: none;">
@@ -1437,10 +1527,15 @@ function uploadFile() {
         alert('Please select a file');
         return;
     }
+    const uploaderName = prompt('Enter your name (who is uploading):');
+    if (!uploaderName || !uploaderName.trim()) {
+        alert('Name is required!');
+        return;
+    }
     const file = fileInput.files[0];
     const fileName = file.name.toLowerCase();
     if (fileName.endsWith('.csv')) {
-        uploadCSV(file);
+        uploadCSV(file, uploaderName.trim());
     } else if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
         alert('Excel support coming soon! Please use CSV format.');
     } else {
@@ -1448,8 +1543,9 @@ function uploadFile() {
     }
 }
 
-function uploadCSV(file) {
+function uploadCSV(file, uploaderName) {
     const reader = new FileReader();
+    const currentDate = new Date().toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
     reader.onload = function(e) {
         try {
             const text = e.target.result;
@@ -1495,12 +1591,15 @@ function uploadCSV(file) {
                         secTarget: obj["SecTarget"] || "",
                         secUsl: obj["SecUsl"] || "",
                         secTera: obj["SecTera"] || "",
-                        status: "OK"
+                        status: "OK",
+                        addedOn: currentDate,
+                        addedBy: uploaderName
                     };
                     count++;
                 }
             }
             localStorage.setItem("mc_data_v1", JSON.stringify(stored));
+            syncToServer();
             closeUploadModal();
             vibrateDevice([100, 50, 100]);
             showSuccessPopup(`Successfully uploaded ${count} records! Use search to find them.`);
@@ -1536,12 +1635,18 @@ function addManualData() {
     }
     
     // Ask for password before adding/updating data
-    const password = prompt('Enter password to save data:');
-    const savedPassword = localStorage.getItem('app_password') || '1234';
+    const password = prompt('Enter admin password to save data:');
+    const savedPassword = localStorage.getItem('admin_password') || '1234';
     
     if (password !== savedPassword) {
         alert('Wrong password! Cannot save data.');
         vibrateDevice([50, 50, 50]);
+        return;
+    }
+
+    const uploaderName = prompt('Enter your name (who is adding):');
+    if (!uploaderName || !uploaderName.trim()) {
+        alert('Name is required!');
         return;
     }
     
@@ -1565,15 +1670,16 @@ function addManualData() {
         secTarget: document.getElementById('secTarget').value.trim(),
         secUsl: document.getElementById('secUsl').value.trim(),
         secTera: document.getElementById('secTera').value.trim(),
-        status: "OK"
+        status: "OK",
+        addedOn: new Date().toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}),
+        addedBy: uploaderName.trim()
     };
     
     try {
         const wasExisting = stored[pcode] ? true : false;
         stored[pcode] = data;
         localStorage.setItem("mc_data_v1", JSON.stringify(stored));
-        
-        console.log('Data saved successfully:', data);
+        syncToServer();
         console.log('Total records:', Object.keys(stored).length);
         
         document.getElementById('manualForm').reset();
@@ -1602,36 +1708,32 @@ function addManualData() {
 
 function searchData() {
     const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
-    const stored = JSON.parse(localStorage.getItem("mc_data_v1") || "{}");
     if (!searchTerm) {
-        // If search is empty, show empty state
         showEmptyState();
         hideResultCount();
         return;
     }
-    const filtered = {};
-    Object.keys(stored).forEach(key => {
-        const item = stored[key];
-        if (item.pcode.toLowerCase().includes(searchTerm) || 
-            item.sku.toLowerCase().includes(searchTerm) ||
-            item.caseGCase.toLowerCase().includes(searchTerm) ||
-            item.pouchGCase.toLowerCase().includes(searchTerm) ||
-            item.bulkGCase.toLowerCase().includes(searchTerm)) {
-            filtered[key] = item;
-        }
-    });
-    
-    // Play sound and vibrate when results found
-    const resultCount = Object.keys(filtered).length;
-    if (resultCount > 0) {
-        playSearchSound();
-        vibrateDevice([100, 50, 100]);
-    } else {
-        playErrorSound();
-        vibrateDevice([200]);
-    }
-    
-    displayResults(filtered, searchTerm);
+    const doSearch = () => {
+        const stored = JSON.parse(localStorage.getItem("mc_data_v1") || "{}");
+        const filtered = {};
+        Object.keys(stored).forEach(key => {
+            const item = stored[key];
+            if (item.pcode && (
+                item.pcode.toLowerCase().includes(searchTerm) ||
+                (item.sku || '').toLowerCase().includes(searchTerm) ||
+                (item.caseGCase || '').toLowerCase().includes(searchTerm) ||
+                (item.pouchGCase || '').toLowerCase().includes(searchTerm) ||
+                (item.bulkGCase || '').toLowerCase().includes(searchTerm))) {
+                filtered[key] = item;
+            }
+        });
+        const resultCount = Object.keys(filtered).length;
+        if (resultCount > 0) { playSearchSound(); vibrateDevice([100, 50, 100]); }
+        else { playErrorSound(); vibrateDevice([200]); }
+        displayResults(filtered, searchTerm);
+    };
+    if (isJsonBinConfigured()) { doSearch(); }
+    else { doSearch(); }
 }
 
 function displayAllData() {
@@ -1678,6 +1780,9 @@ function displayResults(data, searchTerm = '') {
 function createProductCard(item, isCompact = false, searchTerm = '') {
     const cardId = 'card_' + item.pcode;
     const compactClass = isCompact ? ' compact' : '';
+    const isView = window._userRole === 'view';
+    const adminBtns = isView ? '' : `<button class="edit-card-btn" onclick="editRecord('${item.pcode}')">✏️ Edit</button>
+                <button class="delete-card-btn" onclick="deleteCard('${item.pcode}')">🗑️ Delete</button>`;
     
     // Helper function to highlight matching text
     const highlightText = (text, search) => {
@@ -1765,9 +1870,9 @@ function createProductCard(item, isCompact = false, searchTerm = '') {
                         <span class="data-value">${highlightText(item.tera, searchTerm)}</span>
                     </div>
                 </div>
-                <button class="edit-card-btn" onclick="editRecord('${item.pcode}')">✏️ Edit</button>
-                <button class="delete-card-btn" onclick="deleteCard('${item.pcode}')">🗑️ Delete</button>
+                ${adminBtns}
                 <button class="share-card-btn" onclick="shareProduct('${item.pcode}')">📤 Share Product</button>
+                ${(item.addedOn || item.addedBy) ? `<div style="display:flex;justify-content:space-between;margin-top:10px;padding-top:6px;border-top:1px solid #eee;"><span style="font-size:11px;color:#888;">👤 ${item.addedBy || ''}</span><span style="font-size:11px;color:#aaa;">📅 ${item.addedOn || ''}</span></div>` : ''}
             </div>
             <div class="section-content secondary-section" data-section="secondary">
                 <span class="secondary-label">SECONDARY</span>
@@ -1821,9 +1926,9 @@ function createProductCard(item, isCompact = false, searchTerm = '') {
                     </div>
                 </div>
                 
-                <button class="edit-card-btn" onclick="editRecord('${item.pcode}')">✏️ Edit</button>
-                <button class="delete-card-btn" onclick="deleteCard('${item.pcode}')">🗑️ Delete</button>
+                ${adminBtns}
                 <button class="share-card-btn" onclick="shareProduct('${item.pcode}')">📤 Share Product</button>
+                ${(item.addedOn || item.addedBy) ? `<div style="display:flex;justify-content:space-between;margin-top:10px;padding-top:6px;border-top:1px solid #eee;"><span style="font-size:11px;color:#888;">👤 ${item.addedBy || ''}</span><span style="font-size:11px;color:#aaa;">📅 ${item.addedOn || ''}</span></div>` : ''}
             </div>
         </div>
     `;
@@ -1965,7 +2070,7 @@ function clearSearch() {
 function deleteCard(pcode) {
     // Ask for password before delete
     const password = prompt('Enter password to delete:');
-    const savedPassword = localStorage.getItem('app_password') || '1234';
+    const savedPassword = localStorage.getItem('admin_password') || '1234';
     
     if (password !== savedPassword) {
         alert('Wrong password! Cannot delete.');
@@ -1977,6 +2082,7 @@ function deleteCard(pcode) {
         let stored = JSON.parse(localStorage.getItem("mc_data_v1") || "{}");
         delete stored[pcode];
         localStorage.setItem("mc_data_v1", JSON.stringify(stored));
+        syncToServer();
         vibrateDevice([100, 50, 100]);
         showSuccessPopup('Record deleted successfully!');
         
@@ -2058,36 +2164,106 @@ window.onload = function() {
 // Password Protection
 function showPasswordScreen() {
     document.getElementById('passwordScreen').style.display = 'flex';
+    _locationReady = false;
+    // No GPS on load — only requested when view user tries to unlock
+}
+
+function _requestGpsForView(onSuccess, onFail) {
+    if (!navigator.geolocation) { onFail('GPS not supported on this device.'); return; }
+    navigator.geolocation.getCurrentPosition(
+        pos => {
+            _currentLat = pos.coords.latitude;
+            _currentLng = pos.coords.longitude;
+            if (isJsonBinConfigured()) {
+                syncFromServer().then(() => {
+                    startLocationWatch();
+                    updateLocationDots();
+                    _locationReady = true;
+                    onSuccess();
+                });
+            } else {
+                startLocationWatch();
+                updateLocationDots();
+                _locationReady = true;
+                onSuccess();
+            }
+        },
+        () => { onFail('Please enable GPS to continue.'); },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+}
+
+function _showGpsWarning(msg) {
+    const w = document.getElementById('gpsWarning');
+    if (w) { w.textContent = msg; w.style.display = 'block'; }
+    const dot = document.getElementById('locationDot');
+    if (dot) { dot.style.background = '#f44336'; dot.style.boxShadow = '0 0 8px #f44336'; }
 }
 
 function checkPassword() {
     const input = document.getElementById('passwordInput').value;
-    const savedPassword = localStorage.getItem('app_password') || '1234';
+    const adminPassword = localStorage.getItem('admin_password') || '1234';
+    const viewPassword = localStorage.getItem('view_password') || '2468';
     const passwordInput = document.getElementById('passwordInput');
     const passwordBox = document.querySelector('.password-box');
-    
-    if (input === savedPassword) {
-        unlockApp();
+    const locEnabled = localStorage.getItem('loc_enabled') === 'true';
+
+    if (input === adminPassword) {
+        // Admin — no location check, just sync data
+        if (isJsonBinConfigured()) {
+            syncFromServer().then(merged => {
+                if (merged) showSyncToast(Object.keys(merged).length + ' records on server', '#667eea');
+            });
+        }
+        unlockApp('admin');
+    } else if (input === viewPassword) {
+        const locEnabled = localStorage.getItem('loc_enabled') === 'true';
+        if (!locEnabled) {
+            // Location lock off — freely open
+            unlockApp('view');
+            return;
+        }
+        // Location lock on — GPS + location check
+        if (_locationReady) {
+            // Already have GPS
+            if (!isInRange()) {
+                showErrorPopup('Wrong Location!');
+                passwordBox.style.border = '3px solid #f44336';
+                passwordBox.style.boxShadow = '0 0 30px rgba(244,67,54,0.8)';
+                setTimeout(() => { passwordBox.style.border = 'none'; passwordBox.style.boxShadow = '0 10px 40px rgba(0,0,0,0.3)'; }, 1000);
+                vibrateDevice([50, 50, 50]);
+                return;
+            }
+            unlockApp('view');
+        } else {
+            // Request GPS now
+            _showGpsWarning('Getting location...');
+            _requestGpsForView(
+                () => {
+                    const gw = document.getElementById('gpsWarning');
+                    if (gw) gw.style.display = 'none';
+                    if (!isInRange()) {
+                        showErrorPopup('Wrong Location!');
+                        passwordBox.style.border = '3px solid #f44336';
+                        passwordBox.style.boxShadow = '0 0 30px rgba(244,67,54,0.8)';
+                        setTimeout(() => { passwordBox.style.border = 'none'; passwordBox.style.boxShadow = '0 10px 40px rgba(0,0,0,0.3)'; }, 1000);
+                        vibrateDevice([50, 50, 50]);
+                        return;
+                    }
+                    unlockApp('view');
+                },
+                (errMsg) => { _showGpsWarning(errMsg); }
+            );
+        }
     } else {
-        // Show error popup at top
         showErrorPopup('Wrong Password!');
-        
-        // Red highlight entire password box structure
         passwordBox.style.border = '3px solid #f44336';
         passwordBox.style.boxShadow = '0 0 30px rgba(244, 67, 54, 0.8)';
         passwordBox.style.animation = 'shake 0.5s';
-        
-        // Red highlight password input
         passwordInput.style.borderColor = '#f44336';
         passwordInput.style.background = '#ffebee';
-        
-        // Vibrate
         vibrateDevice([50, 50, 50, 50, 50]);
-        
-        // Clear input
         passwordInput.value = '';
-        
-        // Reset after animation
         setTimeout(() => {
             passwordBox.style.border = 'none';
             passwordBox.style.boxShadow = '0 10px 40px rgba(0,0,0,0.3)';
@@ -2146,92 +2322,146 @@ function showErrorPopup(message) {
     }, 2000);
 }
 
-// Unlock app function
-function unlockApp() {
-    document.getElementById('passwordScreen').style.display = 'none';
-    vibrateDevice([100]);
-    loadDarkMode();
-    showEmptyState();
+
+function applyRoleAccess(role) {
+    if (role === 'view') {
+        const menuIcon = document.querySelector('.menu-icon');
+        if (menuIcon) menuIcon.style.display = 'none';
+    }
 }
 
-// Fingerprint Authentication
-async function useFingerprintAuth() {
-    // Check if WebAuthn is supported
+// Role access applied at login
+
+// ============================================================
+// FINGERPRINT AUTHENTICATION
+// Admin fingerprint: registered via Menu > Fingerprint Setup (admin password required)
+// User fingerprint: registered via lock screen user fingerprint button (view password required)
+// ============================================================
+
+async function _registerFingerprint(role, password) {
     if (!window.PublicKeyCredential) {
-        showErrorPopup('❌ Fingerprint Not Supported!');
-        return;
+        alert('Fingerprint not supported on this device/browser.\nRequirements: HTTPS + fingerprint sensor + modern browser.');
+        return false;
     }
-    
-    const fingerprintEnabled = localStorage.getItem('fingerprint_enabled');
-    
-    if (!fingerprintEnabled) {
-        // First time setup
-        const setup = confirm('Fingerprint not set up yet!\n\nDo you want to set up fingerprint authentication?\n\nOK = Set up now\nCancel = Use password');
-        if (setup) {
-            await setupFingerprint();
-        }
-        return;
+    const savedPwd = role === 'admin'
+        ? (localStorage.getItem('admin_password') || '1234')
+        : (localStorage.getItem('view_password') || '2468');
+    if (password !== savedPwd) {
+        alert('Wrong password!');
+        return false;
     }
-    
-    // Authenticate with fingerprint
     try {
-        document.getElementById('passwordError').textContent = '👆 Place your finger on the sensor...';
-        document.getElementById('passwordError').style.color = '#4CAF50';
-        
-        const credentialId = localStorage.getItem('fingerprint_credential');
-        if (!credentialId) {
-            throw new Error('No fingerprint registered');
-        }
-        
-        // Create authentication challenge
         const challenge = new Uint8Array(32);
         window.crypto.getRandomValues(challenge);
-        
-        const publicKeyCredentialRequestOptions = {
-            challenge: challenge,
-            allowCredentials: [{
-                id: Uint8Array.from(atob(credentialId), c => c.charCodeAt(0)),
-                type: 'public-key',
-                transports: ['internal']
-            }],
-            timeout: 60000,
-            userVerification: 'required'
-        };
-        
-        const assertion = await navigator.credentials.get({
-            publicKey: publicKeyCredentialRequestOptions
+        const userId = new Uint8Array(16);
+        window.crypto.getRandomValues(userId);
+        const credential = await navigator.credentials.create({
+            publicKey: {
+                challenge,
+                rp: { name: 'P Code Verify', id: window.location.hostname || 'localhost' },
+                user: { id: userId, name: role + '@pcodeverify.app', displayName: role === 'admin' ? 'Admin' : 'User' },
+                pubKeyCredParams: [{ alg: -7, type: 'public-key' }, { alg: -257, type: 'public-key' }],
+                authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' },
+                timeout: 60000,
+                attestation: 'none'
+            }
         });
-        
-        if (assertion) {
-            // Fingerprint verified successfully
-            document.getElementById('passwordError').textContent = '✅ Fingerprint verified!';
-            document.getElementById('passwordError').style.color = '#4CAF50';
+        if (credential) {
+            const credId = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
+            localStorage.setItem('fp_credential_' + role, credId);
+            localStorage.setItem('fp_enabled_' + role, 'true');
             vibrateDevice([100, 50, 100]);
-            
-            setTimeout(() => {
-                unlockApp();
-            }, 500);
+            showSuccessPopup((role === 'admin' ? 'Admin' : 'User') + ' fingerprint registered!');
+            return true;
         }
-    } catch (error) {
-        console.error('Fingerprint auth error:', error);
-        
-        // Show error popup at top
-        showErrorPopup('Wrong Fingerprint!');
-        
-        // Red highlight entire password box structure
+    } catch (err) {
+        if (err.name === 'NotAllowedError') alert('Fingerprint setup cancelled.');
+        else if (err.name === 'SecurityError') alert('HTTPS required for fingerprint.');
+        else alert('Fingerprint setup failed: ' + err.message);
+    }
+    return false;
+}
+
+async function _authenticateFingerprint(role) {
+    const credId = localStorage.getItem('fp_credential_' + role);
+    if (!credId) return false;
+    try {
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+        const assertion = await navigator.credentials.get({
+            publicKey: {
+                challenge,
+                allowCredentials: [{ id: Uint8Array.from(atob(credId), c => c.charCodeAt(0)), type: 'public-key', transports: ['internal'] }],
+                timeout: 60000,
+                userVerification: 'required'
+            }
+        });
+        return !!assertion;
+    } catch (err) {
+        return false;
+    }
+}
+
+// Lock screen fingerprint button tap
+async function useFingerprintAuth(role) {
+    if (!window.PublicKeyCredential) {
+        showErrorPopup('Fingerprint not supported!');
+        return;
+    }
+    const isRegistered = localStorage.getItem('fp_enabled_' + role) === 'true';
+
+    if (!isRegistered) {
+        // First time — register
+        const pwd = prompt('Enter ' + (role === 'admin' ? 'admin' : 'user') + ' password to register fingerprint:');
+        if (!pwd) return;
+        await _registerFingerprint(role, pwd);
+        return;
+    }
+
+    // Authenticate
+    document.getElementById('passwordError').textContent = 'Place your finger on the sensor...';
+    document.getElementById('passwordError').style.color = '#667eea';
+    const ok = await _authenticateFingerprint(role);
+    document.getElementById('passwordError').textContent = '';
+
+    if (ok) {
+        vibrateDevice([100, 50, 100]);
+        if (role === 'admin') {
+            // Admin — no location check
+            if (isJsonBinConfigured()) {
+                syncFromServer().then(merged => {
+                    if (merged) showSyncToast(Object.keys(merged).length + ' records on server', '#667eea');
+                });
+            }
+            unlockApp('admin');
+        } else {
+            // User — location check
+            const locEnabled = localStorage.getItem('loc_enabled') === 'true';
+            if (!locEnabled) { unlockApp('view'); return; }
+            const passwordBox = document.querySelector('.password-box');
+            if (_locationReady) {
+                if (!isInRange()) { showErrorPopup('Wrong Location!'); vibrateDevice([50,50,50]); return; }
+                unlockApp('view');
+            } else {
+                _showGpsWarning('Getting location...');
+                _requestGpsForView(
+                    () => {
+                        const gw = document.getElementById('gpsWarning');
+                        if (gw) gw.style.display = 'none';
+                        if (!isInRange()) { showErrorPopup('Wrong Location!'); vibrateDevice([50,50,50]); return; }
+                        unlockApp('view');
+                    },
+                    msg => _showGpsWarning(msg)
+                );
+            }
+        }
+    } else {
+        showErrorPopup('Fingerprint not recognized!');
+        vibrateDevice([50, 50, 50, 50, 50]);
         const passwordBox = document.querySelector('.password-box');
         passwordBox.style.border = '3px solid #f44336';
-        passwordBox.style.boxShadow = '0 0 30px rgba(244, 67, 54, 0.8)';
+        passwordBox.style.boxShadow = '0 0 30px rgba(244,67,54,0.8)';
         passwordBox.style.animation = 'shake 0.5s';
-        
-        // Update error message
-        document.getElementById('passwordError').textContent = '❌ Fingerprint not recognized! Try again or use password.';
-        document.getElementById('passwordError').style.color = '#f44336';
-        
-        // Vibrate error pattern
-        vibrateDevice([50, 50, 50, 50, 50]);
-        
-        // Reset after animation
         setTimeout(() => {
             passwordBox.style.border = 'none';
             passwordBox.style.boxShadow = '0 10px 40px rgba(0,0,0,0.3)';
@@ -2240,129 +2470,30 @@ async function useFingerprintAuth() {
     }
 }
 
-// Setup Fingerprint
-async function setupFingerprint() {
-    try {
-        // Check if WebAuthn is supported
-        if (!window.PublicKeyCredential) {
-            alert('❌ Fingerprint Not Supported!\n\nYour browser/device does not support fingerprint authentication.\n\nRequirements:\n- HTTPS website (not HTTP)\n- Modern browser (Chrome, Edge, Safari)\n- Device with fingerprint sensor');
-            return;
-        }
-        
-        // Ask for password first
-        const password = prompt('Enter your current password to set up fingerprint:');
-        const savedPassword = localStorage.getItem('app_password') || '1234';
-        
-        if (password !== savedPassword) {
-            alert('Wrong password! Cannot set up fingerprint.');
-            return;
-        }
-        
-        alert('✅ Password verified!\n\n👆 Now place your finger on the sensor to register your fingerprint.\n\nNote: You may need to scan your finger multiple times.');
-        
-        // Create registration challenge
-        const challenge = new Uint8Array(32);
-        window.crypto.getRandomValues(challenge);
-        
-        const userId = new Uint8Array(16);
-        window.crypto.getRandomValues(userId);
-        
-        const publicKeyCredentialCreationOptions = {
-            challenge: challenge,
-            rp: {
-                name: "P Code Verify",
-                id: window.location.hostname || "localhost"
-            },
-            user: {
-                id: userId,
-                name: "user@pcodeverify.app",
-                displayName: "P Code User"
-            },
-            pubKeyCredParams: [
-                {alg: -7, type: "public-key"},  // ES256
-                {alg: -257, type: "public-key"} // RS256
-            ],
-            authenticatorSelection: {
-                authenticatorAttachment: "platform",
-                requireResidentKey: false,
-                userVerification: "required"
-            },
-            timeout: 60000,
-            attestation: "none"
-        };
-        
-        console.log('Starting fingerprint registration...');
-        
-        const credential = await navigator.credentials.create({
-            publicKey: publicKeyCredentialCreationOptions
-        });
-        
-        if (credential) {
-            // Save credential ID
-            const credentialId = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
-            localStorage.setItem('fingerprint_credential', credentialId);
-            localStorage.setItem('fingerprint_enabled', 'true');
-            
-            console.log('Fingerprint registered successfully!');
-            vibrateDevice([100, 50, 100, 50, 100]);
-            showSuccessPopup('✅ Fingerprint registered successfully! 👆');
-        }
-    } catch (error) {
-        console.error('Fingerprint setup error:', error);
-        
-        let errorMessage = 'Fingerprint setup failed!\n\n';
-        
-        if (error.name === 'NotAllowedError') {
-            errorMessage += 'Reason: Setup cancelled or permission denied.\n\nPlease try again and allow fingerprint access.';
-        } else if (error.name === 'NotSupportedError') {
-            errorMessage += 'Reason: Your device does not support fingerprint authentication.\n\nRequirements:\n- Device with fingerprint sensor\n- HTTPS connection (not HTTP)\n- Modern browser';
-        } else if (error.name === 'SecurityError') {
-            errorMessage += 'Reason: Security error.\n\nThis page must be served over HTTPS (not HTTP) for fingerprint to work.\n\nTry:\n- Upload to GitHub Pages (HTTPS)\n- Use localhost for testing';
-        } else if (error.name === 'InvalidStateError') {
-            errorMessage += 'Reason: Fingerprint already registered.\n\nGo to Menu → Fingerprint Setup to re-register.';
-        } else {
-            errorMessage += 'Reason: ' + error.message + '\n\nError Type: ' + error.name;
-        }
-        
-        alert(errorMessage);
-    }
-}
-
-// Manage Fingerprint from Menu
+// Menu > Fingerprint Setup (admin only — manages admin fingerprint)
 function manageFingerprintAuth() {
     if (!window.PublicKeyCredential) {
-        alert('❌ Fingerprint authentication not supported!\n\nYour device/browser does not support fingerprint authentication.\n\nSupported on:\n- Android Chrome/Edge\n- iOS Safari (iPhone with Touch ID/Face ID)\n- Windows Hello\n\nPlease use password instead.');
+        alert('Fingerprint not supported on this device.');
         toggleMenu();
         return;
     }
-    
-    const fingerprintEnabled = localStorage.getItem('fingerprint_enabled');
-    
-    if (fingerprintEnabled) {
-        // Already set up - show options
-        const choice = confirm('Fingerprint Authentication Status: ✅ ENABLED\n\nWhat do you want to do?\n\nOK = Re-register fingerprint\nCancel = Disable fingerprint');
-        
+    const enabled = localStorage.getItem('fp_enabled_admin') === 'true';
+    if (enabled) {
+        const choice = confirm('Admin fingerprint: ENABLED\n\nOK = Re-register\nCancel = Disable');
         if (choice) {
-            // Re-register
-            setupFingerprint();
+            const pwd = prompt('Enter admin password:');
+            if (pwd) _registerFingerprint('admin', pwd);
         } else {
-            // Disable
-            const confirmDisable = confirm('Are you sure you want to DISABLE fingerprint authentication?\n\nYou will need to use password only.');
-            if (confirmDisable) {
-                localStorage.removeItem('fingerprint_enabled');
-                localStorage.removeItem('fingerprint_credential');
-                showSuccessPopup('Fingerprint authentication disabled!');
-                vibrateDevice([100]);
+            if (confirm('Disable admin fingerprint?')) {
+                localStorage.removeItem('fp_enabled_admin');
+                localStorage.removeItem('fp_credential_admin');
+                showSuccessPopup('Admin fingerprint disabled.');
             }
         }
     } else {
-        // Not set up yet
-        const setup = confirm('Fingerprint Authentication Status: ❌ NOT SET UP\n\nDo you want to set up fingerprint authentication?\n\nOK = Set up now\nCancel = Cancel');
-        if (setup) {
-            setupFingerprint();
-        }
+        const pwd = prompt('Enter admin password to set up fingerprint:');
+        if (pwd) _registerFingerprint('admin', pwd);
     }
-    
     toggleMenu();
 }
 
@@ -2429,7 +2560,7 @@ function loadDarkMode() {
 // Change Password Function with PIN/Password Option
 function changePassword() {
     const oldPassword = prompt('Enter current password:');
-    const savedPassword = localStorage.getItem('app_password') || '1234';
+    const savedPassword = localStorage.getItem('admin_password') || '1234';
     
     if (oldPassword !== savedPassword) {
         alert('Wrong current password!');
@@ -2470,7 +2601,7 @@ function changePassword() {
         return;
     }
     
-    localStorage.setItem('app_password', newPassword);
+    localStorage.setItem('admin_password', newPassword);
     
     // Save password type for reference
     if (choice) {
@@ -2485,6 +2616,28 @@ function changePassword() {
     } else {
         showSuccessPopup('Password changed successfully! 🔐');
     }
+    toggleMenu();
+}
+
+// Change User (view) Password — admin only, syncs to server
+function changeUserPassword() {
+    const adminPwd = prompt('Enter admin password to confirm:');
+    if (adminPwd !== (localStorage.getItem('admin_password') || '1234')) {
+        alert('Wrong admin password!');
+        vibrateDevice([50, 50, 50]);
+        return;
+    }
+    const newPwd = prompt('Enter new user password:\n(min 4 characters)');
+    if (!newPwd || newPwd.length < 4) { alert('Password too short! Min 4 characters.'); return; }
+    const confirmPwd = prompt('Confirm new user password:');
+    if (newPwd !== confirmPwd) { alert('Passwords do not match!'); vibrateDevice([50,50,50]); return; }
+
+    localStorage.setItem('view_password', newPwd);
+    // Sync to server so all user devices get updated
+    syncToServer().then(() => {
+        showSuccessPopup('User password updated and synced!');
+        vibrateDevice([100, 50, 100]);
+    });
     toggleMenu();
 }
 
@@ -3420,7 +3573,492 @@ function downloadAPK() {
     alert('📱 APK Download\n\nTo create APK:\n\n1. Use Cordova (see APK-KAISE-BANAYE.txt)\n2. Or use online tools like:\n   - PWA Builder (pwabuilder.com)\n   - APK Generator\n\n3. Upload to GitHub Pages first\n4. Then convert to APK');
     toggleMenu();
 }
-    </script>
+
+function logoutApp() {
+    toggleMenu();
+    if (!confirm('Are you sure you want to logout?')) return;
+    window._userRole = null;
+    _locationReady = false;
+    stopLocationWatch();
+    _currentLat = null;
+    _currentLng = null;
+    _showOutOfRangeWarning(false);
+    document.getElementById('searchInput').value = '';
+    document.getElementById('resultsContainer').innerHTML = '';
+    hideResultCount();
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('passwordError').textContent = '';
+    const gw = document.getElementById('gpsWarning');
+    if (gw) { gw.style.display = 'none'; gw.textContent = ''; }
+    showPasswordScreen();
+}
+
+// API Settings — key HTML mein nahi, localStorage mein save hoti hai
+function openApiSettings() {
+    toggleMenu();
+    const currentKey = getApiKey();
+    const currentBin = getBinId();
+    const publicBin  = localStorage.getItem('jb_public_bin_id') || currentBin;
+    const status = isJsonBinConfigured()
+        ? '✅ Online Sync: ACTIVE (Admin)'
+        : (publicBin ? '👁️ Read-Only Sync: ACTIVE' : '❌ Online Sync: NOT SET UP');
+
+    const modal = document.createElement('div');
+    modal.id = 'apiSettingsModal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;z-index:9999;';
+    modal.innerHTML = `
+        <div style="background:white;padding:25px;border-radius:15px;width:90%;max-width:450px;box-shadow:0 10px 40px rgba(0,0,0,0.3);max-height:90vh;overflow-y:auto;">
+            <h3 style="color:#667eea;margin-bottom:5px;">🔗 Online Sync Setup</h3>
+            <p style="color:#666;font-size:13px;margin-bottom:5px;">${status}</p>
+
+            <div style="background:#e8f5e9;border-radius:8px;padding:12px;margin-bottom:15px;font-size:12px;color:#2e7d32;">
+                <b>👑 Admin Device (yours):</b> Enter API Key + Bin ID<br>
+                <b>👤 User Device (others):</b> Enter Bin ID only — data will be read
+            </div>
+
+            <label style="font-weight:600;font-size:14px;display:block;margin-bottom:5px;">Bin ID <span style="color:#4CAF50;">(sab devices pe same)</span>:</label>
+            <input id="inputBinId" type="text" value="${publicBin}" placeholder="64abc123xxxxxxxx"
+                style="width:100%;padding:10px;border:2px solid #4CAF50;border-radius:5px;font-size:13px;margin-bottom:15px;box-sizing:border-box;">
+
+            <label style="font-weight:600;font-size:14px;display:block;margin-bottom:5px;">API Key <span style="color:#999;">(sirf admin device pe)</span>:</label>
+            <input id="inputApiKey" type="password" value="${currentKey}" placeholder="Chhod do agar user device hai"
+                style="width:100%;padding:10px;border:2px solid #ddd;border-radius:5px;font-size:13px;margin-bottom:20px;box-sizing:border-box;">
+
+            <div style="display:flex;gap:10px;">
+                <button onclick="saveApiSettings()" style="flex:1;padding:12px;background:#667eea;color:white;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-weight:600;">💾 Save</button>
+                <button onclick="clearApiSettings()" style="flex:1;padding:12px;background:#f44336;color:white;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-weight:600;">🗑️ Clear</button>
+                <button onclick="document.getElementById('apiSettingsModal').remove()" style="flex:1;padding:12px;background:#999;color:white;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-weight:600;">✖</button>
+            </div>
+        </div>`;
+    document.body.appendChild(modal);
+}
+
+function saveApiSettings() {
+    const key = document.getElementById('inputApiKey').value.trim();
+    const bin = document.getElementById('inputBinId').value.trim();
+    if (!bin) { alert('Bin ID is required!'); return; }
+    // Bin ID sab ke liye save karo
+    localStorage.setItem('jb_public_bin_id', bin);
+    // API key sirf agar di ho (admin device)
+    if (key) {
+        localStorage.setItem('jb_api_key', key);
+        localStorage.setItem('jb_bin_id', bin);
+    }
+    document.getElementById('apiSettingsModal').remove();
+    showSuccessPopup(key ? 'Admin sync active!' : 'Read-only sync active!');
+    syncFromServer();
+}
+
+function clearApiSettings() {
+    if (!confirm('Clear API settings? Sync will be disabled.')) return;
+    localStorage.removeItem('jb_api_key');
+    localStorage.removeItem('jb_bin_id');
+    document.getElementById('apiSettingsModal').remove();
+    showSuccessPopup('API settings cleared. Offline mode.');
+}
+
+// ============================================================
+// LOCATION LOCK SYSTEM
+// ============================================================
+
+function openLocationSettings() {
+    const adminPassword = localStorage.getItem('admin_password') || '1234';
+    const pwd = prompt('Enter admin password:');
+    if (pwd !== adminPassword) { alert('Wrong password!'); return; }
+    toggleMenu();
+
+    const loc1 = JSON.parse(localStorage.getItem('loc_1') || 'null');
+    const loc2 = JSON.parse(localStorage.getItem('loc_2') || 'null');
+    const radius = localStorage.getItem('loc_radius') || '100';
+
+    const modal = document.createElement('div');
+    modal.id = 'locationModal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:flex-start;padding:20px;box-sizing:border-box;overflow-y:auto;z-index:9999;';
+    modal.innerHTML = `
+        <div style="background:white;padding:clamp(15px,4vw,25px);border-radius:15px;width:100%;max-width:480px;box-shadow:0 10px 40px rgba(0,0,0,0.3);margin:auto;box-sizing:border-box;">
+            <h3 style="color:#667eea;margin-bottom:4px;font-size:clamp(16px,4vw,20px);">📍 Location Settings</h3>
+            <p style="font-size:clamp(10px,2.5vw,12px);color:#888;margin-bottom:12px;">
+                ⚠️ <span style="font-size:clamp(10px,2.5vw,12px);color:#aaa;">Admin ke liye lock nahi hoga</span>
+                &nbsp;Location lock applies to view users only
+            </p>
+
+            <label style="font-weight:600;font-size:clamp(13px,3vw,15px);display:block;margin-bottom:4px;">📍 Location 1 <span style="font-size:10px;color:#aaa;font-weight:400;">पहली लोकेशन</span></label>
+            <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:6px;margin-bottom:12px;">
+                <input id="loc1lat" type="number" step="any" placeholder="Latitude" value="${loc1 ? loc1.lat : ''}" style="padding:clamp(7px,2vw,10px);border:2px solid #ddd;border-radius:6px;font-size:clamp(12px,3vw,14px);width:100%;box-sizing:border-box;">
+                <input id="loc1lng" type="number" step="any" placeholder="Longitude" value="${loc1 ? loc1.lng : ''}" style="padding:clamp(7px,2vw,10px);border:2px solid #ddd;border-radius:6px;font-size:clamp(12px,3vw,14px);width:100%;box-sizing:border-box;">
+                <button onclick="autoFillLocation(1)" style="padding:clamp(7px,2vw,10px) clamp(8px,2vw,12px);background:#4CAF50;color:white;border:none;border-radius:6px;cursor:pointer;font-size:clamp(11px,2.5vw,13px);white-space:nowrap;">📡 Auto</button>
+            </div>
+
+            <label style="font-weight:600;font-size:clamp(13px,3vw,15px);display:block;margin-bottom:4px;">📍 Location 2 <span style="font-size:10px;color:#aaa;font-weight:400;">दूसरी लोकेशन</span></label>
+            <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:6px;margin-bottom:12px;">
+                <input id="loc2lat" type="number" step="any" placeholder="Latitude" value="${loc2 ? loc2.lat : ''}" style="padding:clamp(7px,2vw,10px);border:2px solid #ddd;border-radius:6px;font-size:clamp(12px,3vw,14px);width:100%;box-sizing:border-box;">
+                <input id="loc2lng" type="number" step="any" placeholder="Longitude" value="${loc2 ? loc2.lng : ''}" style="padding:clamp(7px,2vw,10px);border:2px solid #ddd;border-radius:6px;font-size:clamp(12px,3vw,14px);width:100%;box-sizing:border-box;">
+                <button onclick="autoFillLocation(2)" style="padding:clamp(7px,2vw,10px) clamp(8px,2vw,12px);background:#4CAF50;color:white;border:none;border-radius:6px;cursor:pointer;font-size:clamp(11px,2.5vw,13px);white-space:nowrap;">📡 Auto</button>
+            </div>
+
+            <label style="font-weight:600;font-size:clamp(13px,3vw,15px);display:block;margin-bottom:4px;">📏 Radius (meters) <span style="font-size:10px;color:#aaa;font-weight:400;">दायरा मीटर में</span></label>
+            <input id="locRadius" type="number" value="${radius}" placeholder="100" style="width:100%;padding:clamp(7px,2vw,10px);border:2px solid #ddd;border-radius:6px;font-size:clamp(12px,3vw,14px);margin-bottom:14px;box-sizing:border-box;">
+
+            <label style="display:flex;align-items:center;gap:10px;margin-bottom:16px;cursor:pointer;">
+                <input type="checkbox" id="locEnabled" ${localStorage.getItem('loc_enabled') === 'true' ? 'checked' : ''} style="width:20px;height:20px;cursor:pointer;">
+                <span style="font-size:clamp(13px,3vw,15px);font-weight:600;">Enable Location Lock
+                    <span style="display:block;font-size:10px;color:#aaa;font-weight:400;">लोकेशन लॉक चालू करो</span>
+                </span>
+            </label>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <button onclick="saveLocationSettings()" style="padding:clamp(10px,3vw,14px);background:#667eea;color:white;border:none;border-radius:8px;font-size:clamp(13px,3vw,15px);cursor:pointer;font-weight:600;">💾 Save</button>
+                <button onclick="document.getElementById('locationModal').remove()" style="padding:clamp(10px,3vw,14px);background:#999;color:white;border:none;border-radius:8px;font-size:clamp(13px,3vw,15px);cursor:pointer;font-weight:600;">✖ Close</button>
+            </div>
+        </div>`;
+    document.body.appendChild(modal);
+}
+
+function autoFillLocation(num) {
+    if (!navigator.geolocation) { alert('GPS supported nahi hai!'); return; }
+    const latEl = document.getElementById('loc' + num + 'lat');
+    const lngEl = document.getElementById('loc' + num + 'lng');
+    // Pehle clear karo aur loading dikhao
+    latEl.value = '';
+    lngEl.value = '';
+    latEl.placeholder = '⏳ GPS...';
+    lngEl.placeholder = '⏳ GPS...';
+    navigator.geolocation.getCurrentPosition(
+        pos => {
+            latEl.value = pos.coords.latitude.toFixed(6);
+            lngEl.value = pos.coords.longitude.toFixed(6);
+            latEl.placeholder = 'Latitude';
+            lngEl.placeholder = 'Longitude';
+            showSuccessPopup('📍 Location ' + num + ' location add done');
+        },
+        err => {
+            latEl.placeholder = 'Latitude';
+            lngEl.placeholder = 'Longitude';
+            alert('Location not found!\n\nReason: ' + err.message + '\n\nPlease enable GPS and try again.');
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+}
+
+function saveLocationSettings() {
+    const lat1 = document.getElementById('loc1lat').value.trim();
+    const lng1 = document.getElementById('loc1lng').value.trim();
+    const lat2 = document.getElementById('loc2lat').value.trim();
+    const lng2 = document.getElementById('loc2lng').value.trim();
+    const radius = document.getElementById('locRadius').value.trim() || '100';
+    const enabled = document.getElementById('locEnabled').checked;
+
+    if (lat1 && lng1) localStorage.setItem('loc_1', JSON.stringify({ lat: parseFloat(lat1), lng: parseFloat(lng1) }));
+    else localStorage.removeItem('loc_1');
+    if (lat2 && lng2) localStorage.setItem('loc_2', JSON.stringify({ lat: parseFloat(lat2), lng: parseFloat(lng2) }));
+    else localStorage.removeItem('loc_2');
+
+    localStorage.setItem('loc_radius', radius);
+    localStorage.setItem('loc_enabled', enabled ? 'true' : 'false');
+    document.getElementById('locationModal').remove();
+    showSuccessPopup('Location settings saved!');
+    syncToServer(); // server pe bhi save karo
+}
+
+function getDistance(lat1, lng1, lat2, lng2) {
+    const R = 6371000;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLng/2) * Math.sin(dLng/2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+// ---- Global Location Tracker (watchPosition — sirf ek baar permission) ----
+let _currentLat = null;
+let _currentLng = null;
+let _locationWatchId = null;
+let _locationReady = false; // GPS permission mili aur location cached hai
+
+function startLocationWatch() {
+    const enabled = localStorage.getItem('loc_enabled') === 'true';
+    if (!enabled || !navigator.geolocation) return;
+
+    // Pehle se chal raha ho to dobara mat shuru karo
+    if (_locationWatchId !== null) return;
+
+    _locationWatchId = navigator.geolocation.watchPosition(
+        pos => {
+            _currentLat = pos.coords.latitude;
+            _currentLng = pos.coords.longitude;
+            updateLocationDots();
+        },
+        () => {
+            _currentLat = null;
+            _currentLng = null;
+            updateLocationDots();
+        },
+        { enableHighAccuracy: true, maximumAge: 15000, timeout: 10000 }
+    );
+}
+
+function stopLocationWatch() {
+    if (_locationWatchId !== null) {
+        navigator.geolocation.clearWatch(_locationWatchId);
+        _locationWatchId = null;
+    }
+}
+
+function isInRange() {
+    if (_currentLat === null) return false;
+    const radius = parseFloat(localStorage.getItem('loc_radius') || '100');
+    const loc1 = JSON.parse(localStorage.getItem('loc_1') || 'null');
+    const loc2 = JSON.parse(localStorage.getItem('loc_2') || 'null');
+    if (loc1 && getDistance(_currentLat, _currentLng, loc1.lat, loc1.lng) <= radius) return true;
+    if (loc2 && getDistance(_currentLat, _currentLng, loc2.lat, loc2.lng) <= radius) return true;
+    return false;
+}
+
+function updateLocationDots() {
+    const dots = [
+        document.getElementById('locationDot'),
+        document.getElementById('mainLocationDot')
+    ];
+    const enabled = localStorage.getItem('loc_enabled') === 'true';
+
+    if (!enabled) {
+        dots.forEach(d => { if(d) { d.style.background = '#ccc'; d.style.boxShadow = ''; d.classList.remove('dot-blink'); } });
+        return;
+    }
+
+    if (_currentLat === null) {
+        dots.forEach(d => { if(d) { d.style.background = '#ccc'; d.style.boxShadow = ''; d.classList.remove('dot-blink'); } });
+        return;
+    }
+
+    const inRange = isInRange();
+    dots.forEach(d => {
+        if (!d) return;
+        d.style.background = inRange ? '#4CAF50' : '#f44336';
+        d.style.boxShadow = inRange ? '0 0 8px #4CAF50' : '0 0 8px #f44336';
+        d.classList.add('dot-blink');
+    });
+
+    // View user — agar range se bahar gaya to warning + data block
+    if (window._userRole === 'view' && !inRange) {
+        _showOutOfRangeWarning(true);
+    } else {
+        _showOutOfRangeWarning(false);
+    }
+}
+
+function _showOutOfRangeWarning(show) {
+    let w = document.getElementById('outOfRangeWarning');
+    if (!w) {
+        w = document.createElement('div');
+        w.id = 'outOfRangeWarning';
+        w.style.cssText = 'position:fixed;top:60px;left:50%;transform:translateX(-50%);color:#f44336;font-size:11px;font-weight:700;z-index:99999;display:none;text-align:center;pointer-events:none;letter-spacing:0.5px;';
+        w.textContent = '⚠ Out of range — access restricted';
+        document.body.appendChild(w);
+    }
+    w.style.display = show ? 'block' : 'none';
+
+    // Block/unblock results container
+    const container = document.getElementById('resultsContainer');
+    if (container) {
+        container.style.filter = show ? 'blur(4px) grayscale(1)' : '';
+        container.style.pointerEvents = show ? 'none' : '';
+    }
+}
+
+// Purana naam raha — backward compatible
+function checkLocationDot() {
+    const enabled = localStorage.getItem('loc_enabled') === 'true';
+    if (!enabled) { updateLocationDots(); return; }
+    // Watch shuru karo agar nahi hua
+    startLocationWatch();
+    // Agar location pehle se hai to turant update karo
+    updateLocationDots();
+}
+
+function refreshLocationAndSync() {
+    const btn = event.target;
+    btn.style.transform = 'rotate(360deg)';
+    btn.style.transition = 'transform 0.5s';
+    setTimeout(() => { btn.style.transform = ''; }, 500);
+    // Watch restart karo fresh location ke liye
+    stopLocationWatch();
+    _currentLat = null;
+    _currentLng = null;
+    // Dots grey + blink karo jab tak naya data na aaye
+    const dots = [document.getElementById('locationDot'), document.getElementById('mainLocationDot')];
+    dots.forEach(d => { if(d) { d.style.background = '#ccc'; d.style.boxShadow = ''; d.classList.add('dot-blink'); } });
+    // Server se fresh location settings fetch karo
+    if (isJsonBinConfigured()) {
+        syncFromServer().then(() => {
+            startLocationWatch();
+            updateLocationDots();
+            const term = document.getElementById('searchInput')?.value?.trim();
+            if (term) searchData();
+        });
+    } else {
+        startLocationWatch();
+        updateLocationDots();
+    }
+}
+
+function isLocationAllowed(callback) {
+    const enabled = localStorage.getItem('loc_enabled') === 'true';
+    if (!enabled) { callback(true); return; }
+    if (!navigator.geolocation) { callback(true); return; }
+
+    // Agar location pehle se cached hai to seedha use karo
+    if (_currentLat !== null) {
+        callback(isInRange());
+        return;
+    }
+
+    // Pehli baar — ek baar getCurrentPosition, phir watch shuru
+    navigator.geolocation.getCurrentPosition(pos => {
+        _currentLat = pos.coords.latitude;
+        _currentLng = pos.coords.longitude;
+        updateLocationDots();
+        startLocationWatch(); // ab watch shuru karo
+        callback(isInRange());
+    }, () => {
+        startLocationWatch();
+        callback(true); // GPS nahi mila — allow karo
+    }, { enableHighAccuracy: true, timeout: 8000 });
+}
+
+// ============================================================
+// JSONBIN BACKEND SYNC — Online Data Storage
+// ============================================================
+// SETUP KARNE KE LIYE:
+//   1. jsonbin.io par free account banao
+//   2. API Key copy karo (Account > API Keys)
+//   3. Ek naya Bin banao (New Bin > empty JSON {})
+//   4. Bin ID copy karo (URL mein hota hai)
+//   5. Neeche JSONBIN_API_KEY aur JSONBIN_BIN_ID fill karo
+// ============================================================
+
+// API keys HTML mein nahi hain — localStorage mein store hoti hain
+// Admin settings se enter karo — GitHub pe leak nahi hogi
+function getApiKey() {
+    // Pehle config.js check karo (local file, GitHub pe nahi jayegi)
+    if (typeof JSONBIN_CONFIG !== 'undefined' && JSONBIN_CONFIG.apiKey)
+        return JSONBIN_CONFIG.apiKey;
+    // Phir localStorage check karo (settings se save ki hui)
+    return localStorage.getItem('jb_api_key') || '';
+}
+function getBinId() {
+    // Pehle config.js check karo
+    if (typeof JSONBIN_CONFIG !== 'undefined' && JSONBIN_CONFIG.binId)
+        return JSONBIN_CONFIG.binId;
+    // Phir localStorage check karo
+    return localStorage.getItem('jb_bin_id') || '';}
+
+function isJsonBinConfigured() {
+    return getApiKey() !== '' && getBinId() !== '';
+}
+
+function showSyncToast(msg, color) {
+    let t = document.getElementById('syncToast');
+    if (!t) {
+        t = document.createElement('div');
+        t.id = 'syncToast';
+        t.style.cssText = 'position:fixed;top:70px;right:15px;padding:10px 16px;border-radius:8px;color:white;font-size:13px;font-weight:600;z-index:99999;box-shadow:0 4px 15px rgba(0,0,0,0.35);display:none;max-width:280px;line-height:1.4;transition:opacity 0.3s;';
+        document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.background = color || '#4CAF50';
+    t.style.display = 'block';
+    t.style.opacity = '1';
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => { t.style.opacity = '0'; setTimeout(() => { t.style.display = 'none'; }, 300); }, 3500);
+}
+
+// Server se data fetch karo — public bin se, key optional
+async function syncFromServer() {
+    const binId = getBinId();
+    if (!binId) return;
+    try {
+        const headers = { 'X-Bin-Meta': 'false' };
+        const key = getApiKey();
+        if (key) headers['X-Access-Key'] = key;
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, { headers });
+        if (!res.ok) {
+            if (res.status === 401) throw new Error('401 - API Key wrong!');
+            if (res.status === 404) throw new Error('404 - Bin ID not found!');
+            throw new Error('HTTP ' + res.status);
+        }
+        const json = await res.json();
+        const rec = json.record || json || {};
+        // Product records sync
+        const serverData = rec.records || {};
+        const localData = JSON.parse(localStorage.getItem('mc_data_v1') || '{}');
+        const merged = Object.assign({}, localData, serverData);
+        localStorage.setItem('mc_data_v1', JSON.stringify(merged));
+        // Location settings sync — only overwrite if server has them
+        if (rec.locationSettings) {
+            const ls = rec.locationSettings;
+            if (ls.loc_1) localStorage.setItem('loc_1', JSON.stringify(ls.loc_1));
+            else localStorage.removeItem('loc_1');
+            if (ls.loc_2) localStorage.setItem('loc_2', JSON.stringify(ls.loc_2));
+            else localStorage.removeItem('loc_2');
+            if (ls.loc_radius) localStorage.setItem('loc_radius', ls.loc_radius);
+            if (ls.loc_enabled !== undefined) localStorage.setItem('loc_enabled', ls.loc_enabled);
+        }
+        // View password sync — admin se update hoga to user ke pass bhi aayega
+        if (rec.viewPassword) {
+            localStorage.setItem('view_password', rec.viewPassword);
+        }
+        const count = Object.keys(merged).length;
+        showSyncToast('✅ ' + count + ' records synced', '#4CAF50');
+        return merged;
+    } catch (err) {
+        showSyncToast('❌ ' + err.message, '#f44336');
+    }
+}
+
+// Server par data save karo
+async function syncToServer() {
+    if (!isJsonBinConfigured()) return;
+    try {
+        const data = JSON.parse(localStorage.getItem('mc_data_v1') || '{}');
+        // Save location settings too
+        const locationSettings = {
+            loc_1: JSON.parse(localStorage.getItem('loc_1') || 'null'),
+            loc_2: JSON.parse(localStorage.getItem('loc_2') || 'null'),
+            loc_radius: localStorage.getItem('loc_radius') || '100',
+            loc_enabled: localStorage.getItem('loc_enabled') || 'false'
+        };
+        const viewPassword = localStorage.getItem('view_password') || '2468';
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${getBinId()}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Access-Key': getApiKey()
+            },
+            body: JSON.stringify({ records: data, locationSettings, viewPassword })
+        });
+        if (!res.ok) {
+            if (res.status === 401) throw new Error('401 - API Key wrong!');
+            if (res.status === 404) throw new Error('404 - Bin ID not found!');
+            throw new Error('HTTP ' + res.status);
+        }
+        showSyncToast('☁️ Saved to tha server', '#2196F3');
+    } catch (err) {
+        showSyncToast('❌ ' + err.message, '#f44336');
+    }
+}
+
+// App unlock
+function unlockApp(role) {
+    window._userRole = role || 'admin';
+    document.getElementById('passwordScreen').style.display = 'none';
+    vibrateDevice([100]);
+    loadDarkMode();
+    loadTheme();
+    showEmptyState();
+    applyRoleAccess(window._userRole);
+}
+</script>
 </body>
 </html>
-
